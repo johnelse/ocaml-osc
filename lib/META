@@ -1,6 +1,6 @@
 version = "0.1.0"
 description = "Implementation of the Open Sound Control protocol"
-requires = ""
+requires = "bitstring"
 archive(byte) = "osc.cma"
 archive(byte, plugin) = "osc.cma"
 archive(native) = "osc.cmxa"
