@@ -4,6 +4,14 @@ type argument =
   | Str of string
   | Blob of string
 
+let encode_int i =
+  BITSTRING { i : 32 : bigendian }
+
+let decode_int b =
+  bitmatch b with {
+    i : 4*8 : bigendian
+  } -> i
+
 let encode_float f =
   BITSTRING {
     Int32.bits_of_float f : 32 : bigendian
