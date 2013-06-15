@@ -9,7 +9,7 @@ let encode_float f =
     Int32.bits_of_float f : 32 : bigendian
   }
 
-let encode_int i =
+let encode_int32 i =
   BITSTRING {
     i : 32 : bigendian
   }
@@ -29,7 +29,7 @@ let read_float data =
   } ->
     Int32.float_of_bits i, rest
 
-let read_int data =
+let read_int32 data =
   bitmatch data with {
     i : 4*8 : bigendian;
     rest : -1 : bitstring
