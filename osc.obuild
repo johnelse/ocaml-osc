@@ -5,6 +5,6 @@ obuild-ver: 1
 
 library osc
   src-dir: lib
-  modules: osc_message
+  modules: osc
   build-deps: bitstring.syntax
   pp: camlp4o
