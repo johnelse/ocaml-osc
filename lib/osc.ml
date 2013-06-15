@@ -14,13 +14,15 @@ let encode_int i =
     i : 32 : bigendian
   }
 
-let decode_float b =
-  bitmatch b with {
-    i : 4*8 : bigendian
+let read_float data =
+  bitmatch data with {
+    i : 4*8 : bigendian;
+    rest : -1 : bitstring
   } ->
-    Int32.float_of_bits i
+    Int32.float_of_bits i, rest
 
-let decode_int b =
-  bitmatch b with {
-    i : 4*8 : bigendian
-  } -> i
+let read_int data =
+  bitmatch data with {
+    i : 4*8 : bigendian;
+    rest : -1 : bitstring
+  } -> i, rest
