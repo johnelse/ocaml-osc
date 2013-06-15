@@ -14,6 +14,12 @@ let encode_int i =
     i : 32 : bigendian
   }
 
+let encode_string s =
+  let length = String.length s in
+  let padding = 4 - (length mod 4) in
+  let suffix = String.make padding '\000' in
+  Bitstring.bitstring_of_string (s ^ suffix)
+
 let read_float data =
   bitmatch data with {
     i : 4*8 : bigendian;
@@ -26,3 +32,20 @@ let read_int data =
     i : 4*8 : bigendian;
     rest : -1 : bitstring
   } -> i, rest
+
+let read_string data =
+  let rec read_string' buffer data =
+    bitmatch data with {
+      s : 4*8 : string;
+      rest : -1 : bitstring
+    } ->
+      try
+        let index = String.index s '\000' in
+        Buffer.add_string buffer (String.sub s 0 index);
+        Buffer.contents buffer, rest
+      with Not_found ->
+        Buffer.add_string buffer s;
+        read_string' buffer rest
+  in
+  read_string' (Buffer.create 16) data
+
