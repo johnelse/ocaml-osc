@@ -4,12 +4,12 @@ type argument =
   | Str of string
   | Blob of string
 
-let bits_of_float f =
+let encode_float f =
   BITSTRING {
     Int32.bits_of_float f : 32 : bigendian
   }
 
-let float_of_bits b =
+let decode_float b =
   bitmatch b with {
     i : 4*8 : bigendian
   } ->
