@@ -15,6 +15,8 @@ let encode_int i =
   }
 
 let encode_string s =
+  (* Add nulls to pad the string length out to a multiple of
+   * four bytes, then convert to a bitstring. *)
   let length = String.length s in
   let padding = 4 - (length mod 4) in
   let suffix = String.make padding '\000' in
@@ -40,10 +42,14 @@ let read_string data =
       rest : -1 : bitstring
     } ->
       try
+        (* If there's a null, we're at the end. Append everything up the
+         * first zero to the buffer, and return the buffer contents. *)
         let index = String.index s '\000' in
         Buffer.add_string buffer (String.sub s 0 index);
         Buffer.contents buffer, rest
       with Not_found ->
+        (* No null found, so append all four bytes to the buffer and
+         * recursively look at the next four bytes in the bitstring. *)
         Buffer.add_string buffer s;
         read_string' buffer rest
   in
