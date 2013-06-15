@@ -4,6 +4,15 @@ type argument =
   | Str of string
   | Blob of string
 
+type message = {
+  address: string;
+  arguments: argument list;
+}
+
+type packet =
+  | Message of message
+  | Bundle of packet list
+
 let encode_float f =
   BITSTRING {
     Int32.bits_of_float f : 32 : bigendian
