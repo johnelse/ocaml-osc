@@ -16,9 +16,13 @@ type packet =
 exception Missing_typetags
 exception Unsupported_typetag of char
 
+(* Strings are padding with 1-4 null characters to make the total
+ * length a multiple of 4 bytes. *)
 let string_padding_of_length length =
   4 - (length mod 4)
 
+(* Blobs are padded with 0-3 null characters to make the total
+ * length a multiple of 4 bytes. *)
 let blob_padding_of_length length =
   match length mod 4 with
   | 0 -> 0
