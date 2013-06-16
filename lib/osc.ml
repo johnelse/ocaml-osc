@@ -62,10 +62,8 @@ let encode_arguments arguments =
   let rec encode_arguments' typetags encoded_acc arguments =
     match arguments with
     | [] ->
-      BITSTRING {
-        Buffer.contents typetags : 8 * (Buffer.length typetags) : string;
-        encoded_acc : Bitstring.bitstring_length encoded_acc : bitstring
-      }
+      let encoded_typetags = encode_string (Buffer.contents typetags) in
+      Bitstring.concat [encoded_typetags; encoded_acc]
     | argument :: rest ->
       let typetag, encoded_argument = encode_argument argument in
       Buffer.add_char typetags typetag;
