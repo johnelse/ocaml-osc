@@ -1,6 +1,6 @@
 type argument =
-  | Int32 of int32
   | Float32 of float
+  | Int32 of int32
   | Str of string
   | Blob of string
 
