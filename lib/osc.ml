@@ -16,6 +16,9 @@ type packet =
 exception Missing_typetags
 exception Unsupported_typetag of char
 
+let string_padding_of_length length =
+  4 - (length mod 4)
+
 let blob_padding_of_length length =
   match length mod 4 with
   | 0 -> 0
@@ -35,8 +38,7 @@ let encode_string s =
   (* Add nulls to pad the string length out to a multiple of
    * four bytes, then convert to a bitstring. *)
   let length = String.length s in
-  let padding = 4 - (length mod 4) in
-  let suffix = String.make padding '\000' in
+  let suffix = String.make (string_padding_of_length length) '\000' in
   Bitstring.bitstring_of_string (s ^ suffix)
 
 let encode_blob b =
