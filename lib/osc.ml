@@ -52,6 +52,33 @@ let encode_blob b =
       suffix : padding * 8 : string
     }
 
+let encode_argument = function
+  | Float32 f -> 'f', encode_float f
+  | Int32 i -> 'i', encode_int32 i
+  | Str s -> 's', encode_string s
+  | Blob b -> 'b', encode_blob b
+
+let encode_arguments arguments =
+  let rec encode_arguments' typetags encoded_acc arguments =
+    match arguments with
+    | [] ->
+      BITSTRING {
+        Buffer.contents typetags : 8 * (Buffer.length typetags) : string;
+        encoded_acc : Bitstring.bitstring_length encoded_acc : bitstring
+      }
+    | argument :: rest ->
+      let typetag, encoded_argument = encode_argument argument in
+      Buffer.add_char typetags typetag;
+      encode_arguments'
+        typetags
+        (Bitstring.concat [encoded_acc; encoded_argument])
+        rest
+  in
+  let argument_count = List.length arguments in
+  let typetags = Buffer.create (argument_count + 1) in
+  Buffer.add_char typetags ',';
+  encode_arguments' typetags Bitstring.empty_bitstring arguments
+
 let read_float data =
   bitmatch data with {
     i : 4*8 : bigendian;
