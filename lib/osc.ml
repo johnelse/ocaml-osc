@@ -21,7 +21,7 @@ let blob_padding_of_length length =
   | 0 -> 0
   | x -> 4 - x
 
-let encode_float f =
+let encode_float32 f =
   BITSTRING {
     Int32.bits_of_float f : 32 : bigendian
   }
@@ -56,7 +56,7 @@ let encode_blob b =
     }
 
 let encode_argument = function
-  | Float32 f -> 'f', encode_float f
+  | Float32 f -> 'f', encode_float32 f
   | Int32 i -> 'i', encode_int32 i
   | Str s -> 's', encode_string s
   | Blob b -> 'b', encode_blob b
@@ -80,7 +80,7 @@ let encode_arguments arguments =
   Buffer.add_char typetags ',';
   encode_arguments' typetags Bitstring.empty_bitstring arguments
 
-let read_float data =
+let read_float32 data =
   bitmatch data with {
     i : 4*8 : bigendian;
     rest : -1 : bitstring
@@ -125,7 +125,7 @@ let read_blob data =
 
 let read_argument typetag data =
   match typetag with
-  | 'f' -> let f, rest = read_float data in Float32 f, rest
+  | 'f' -> let f, rest = read_float32 data in Float32 f, rest
   | 'i' -> let i, rest = read_int32 data in Int32 i, rest
   | 's' -> let s, rest = read_string data in Str s, rest
   | 'b' -> let b, rest = read_blob data in Blob b, rest
