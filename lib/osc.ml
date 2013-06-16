@@ -68,17 +68,17 @@ let encode_argument = function
   | Blob b -> 'b', encode_blob b
 
 let encode_arguments arguments =
-  let rec encode_arguments' typetags encoded_acc arguments =
+  let rec encode_arguments' typetags encoded_arguments arguments =
     match arguments with
     | [] ->
       let encoded_typetags = encode_string (Buffer.contents typetags) in
-      Bitstring.concat [encoded_typetags; encoded_acc]
+      Bitstring.concat [encoded_typetags; encoded_arguments]
     | argument :: rest ->
       let typetag, encoded_argument = encode_argument argument in
       Buffer.add_char typetags typetag;
       encode_arguments'
         typetags
-        (Bitstring.concat [encoded_acc; encoded_argument])
+        (Bitstring.concat [encoded_arguments; encoded_argument])
         rest
   in
   let argument_count = List.length arguments in
