@@ -13,6 +13,9 @@ type packet =
   | Message of message
   | Bundle of packet list
 
+exception Missing_typetags
+exception Unsupported_typetag of char
+
 let blob_padding_of_length length =
   match length mod 4 with
   | 0 -> 0
@@ -119,3 +122,34 @@ let read_blob data =
     _ : padding_length * 8 : string;
     rest : -1 : bitstring
   } -> b, rest
+
+let read_argument typetag data =
+  match typetag with
+  | 'f' -> let f, rest = read_float data in Float32 f, rest
+  | 'i' -> let i, rest = read_int32 data in Int32 i, rest
+  | 's' -> let s, rest = read_string data in Str s, rest
+  | 'b' -> let b, rest = read_blob data in Blob b, rest
+  | c -> raise (Unsupported_typetag c)
+
+let read_arguments data =
+  let rec read_arguments' typetags typetags_count typetags_left data acc =
+    if typetags_left <= 0
+    then acc, data
+    else begin
+      let typetag = typetags.[typetags_count - typetags_left + 1] in
+      let argument, rest = read_argument typetag data in
+      read_arguments'
+        typetags
+        typetags_count
+        (typetags_left - 1)
+        rest
+        (argument :: acc)
+    end
+  in
+  let typetags, rest = read_string data in
+  if typetags.[0] <> ',' then raise Missing_typetags;
+  let typetags_count = (String.length typetags) - 1 in
+  let typetags_left = typetags_count in
+  let arguments, rest =
+    read_arguments' typetags typetags_count typetags_left rest [] in
+  List.rev arguments, rest
