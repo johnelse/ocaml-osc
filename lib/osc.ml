@@ -38,13 +38,15 @@ let encode_int32 i =
     i : 32 : bigendian
   }
 
+(* Add 1-4 nulls to pad the string length out to a multiple of
+ * four bytes, then convert to a bitstring. *)
 let encode_string s =
-  (* Add nulls to pad the string length out to a multiple of
-   * four bytes, then convert to a bitstring. *)
   let length = String.length s in
   let suffix = String.make (string_padding_of_length length) '\000' in
   Bitstring.bitstring_of_string (s ^ suffix)
 
+(* Encode the length of the blob, followed by the blob itself (as a string),
+ * followed by 0-3 nulls to make the total length a multiple of 4 bytes. *)
 let encode_blob b =
   let length = String.length b in
   let padding = blob_padding_of_length length in
@@ -67,6 +69,8 @@ let encode_argument = function
   | Str s -> 's', encode_string s
   | Blob b -> 'b', encode_blob b
 
+(* Recursively create a string of typetags and a bitstring containing all
+ * the encoded arguments. At the end, concat these into a single bitstring. *)
 let encode_arguments arguments =
   let rec encode_arguments' typetags encoded_arguments arguments =
     match arguments with
@@ -107,7 +111,7 @@ let read_string data =
     } ->
       try
         (* If there's a null, we're at the end. Append everything up the
-         * first zero to the buffer, and return the buffer contents. *)
+         * first null to the buffer, and return the buffer contents. *)
         let index = String.index s '\000' in
         Buffer.add_string buffer (String.sub s 0 index);
         Buffer.contents buffer, rest
@@ -119,6 +123,9 @@ let read_string data =
   in
   read_string' (Buffer.create 16) data
 
+(* Read the blob length, then use that to read the blob. Work out the expected
+ * number of padding characters and discard them, and return the rest of the
+ * input bitstring. *)
 let read_blob data =
   let size, rest = read_int32 data in
   let blob_length = Int32.to_int size in
@@ -137,6 +144,7 @@ let read_argument typetag data =
   | 'b' -> let b, rest = read_blob data in Blob b, rest
   | c -> raise (Unsupported_typetag c)
 
+(* Read the typetag string, then use that to read the arguments one-by-one. *)
 let read_arguments data =
   let rec read_arguments' typetags typetags_count typetags_left data acc =
     if typetags_left <= 0
