@@ -1,0 +1,4 @@
+PKG bitstring bitstring.syntax
+S lib
+
+B dist/build/lib-osc
