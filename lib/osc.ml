@@ -28,6 +28,73 @@ let blob_padding_of_length length =
   | 0 -> 0
   | x -> 4 - x
 
+module Make (Io : Osc_transport.IO) = struct
+  open Io
+
+  module Encode = struct
+    let float32 output f =
+      Io.write_int32 output (Int32.bits_of_float f)
+
+    let int32 output i =
+      Io.write_int32 output i
+
+    let string output s =
+      let length = String.length s in
+      let suffix = String.make (string_padding_of_length length) '\000' in
+      Io.write_string output (s ^ suffix)
+
+    let blob output b =
+      let length = String.length b in
+      let suffix = String.make (blob_padding_of_length length) '\000' in
+      Io.write_string output (b ^ suffix)
+  end
+
+  module Decode = struct
+    let float32 input =
+      Io.read_int32 input >|= Int32.float_of_bits
+
+    let int32 input =
+      Io.read_int32 input
+
+    let string input =
+      let rec read buffer =
+        let data = String.create 4 in
+        Io.read_string input data 0 4
+        >>= (function
+          | 4 -> begin
+            try
+              (* If there's a null, we're at the end. Append everything up the
+               * first null to the buffer, and return the buffer contents. *)
+              let index = String.index data '\000' in
+              Buffer.add_string buffer (String.sub data 0 index);
+              Io.return (Buffer.contents buffer)
+            with Not_found ->
+              (* No null found, so append all four bytes to the buffer and
+               * recursively read the next four bytes. *)
+              Buffer.add_string buffer data;
+              read buffer
+          end
+          | _ -> Io.raise_exn End_of_file)
+      in
+      read (Buffer.create 16)
+
+    (* Read the blob length, then use that to read the blob and the padding.
+     * Return the substring containing just the blob data. *)
+    let blob input =
+      Io.read_int32 input
+      >>= (fun size ->
+        let blob_length = Int32.to_int size in
+        let padding_length = blob_padding_of_length blob_length in
+        let total_length = blob_length + padding_length in
+        let data = String.create total_length in
+        Io.read_string input data 0 total_length
+        >>= (function
+          | chars_read when chars_read = total_length ->
+            Io.return (String.sub data 0 blob_length)
+          | _ -> Io.raise_exn End_of_file))
+  end
+end
+
 let encode_float32 f =
   BITSTRING {
     Int32.bits_of_float f : 32 : bigendian
