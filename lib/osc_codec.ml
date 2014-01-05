@@ -127,7 +127,7 @@ module Make (Io : Osc_transport.IO) = struct
       | 'i' -> (int32 input) >|= (fun i -> Int32 i)
       | 's' -> (string input) >|= (fun s -> Str s)
       | 'b' -> (blob input) >|= (fun b -> Blob b)
-      | other -> Io.raise_exn (Invalid_argument (Char.escaped other))
+      | typetag -> Io.raise_exn (Unsupported_typetag typetag)
 
     let arguments input =
       string input >>=
