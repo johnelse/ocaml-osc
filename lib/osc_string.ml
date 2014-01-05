@@ -50,4 +50,4 @@ module Io = struct
     Buffer.add_string output tmp
 end
 
-module Streamer = Osc.Make(Io)
+module Codec = Osc_codec.Make(Io)
