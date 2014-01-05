@@ -46,7 +46,8 @@ module Make (Io : Osc_transport.IO) = struct
     let blob output b =
       let length = String.length b in
       let suffix = String.make (blob_padding_of_length length) '\000' in
-      Io.write_string output (b ^ suffix)
+      Io.write_int32 output (Int32.of_int length)
+      >>= (fun () -> Io.write_string output (b ^ suffix))
   end
 
   module Decode = struct
