@@ -1,4 +1,4 @@
-PKG bitstring bitstring.syntax
+PKG bitstring bitstring.syntax ocplib-endian
 S lib
 
 B dist/build/lib-osc
