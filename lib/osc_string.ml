@@ -29,8 +29,10 @@ module Io = struct
       then max (input.pos + length - data_length) 0
       else length
     in
-    String.blit input.data input.pos str offset blit_length;
-    input.pos <- input.pos + blit_length;
+    if blit_length > 0 then begin
+      String.blit input.data input.pos str offset blit_length;
+      input.pos <- input.pos + blit_length
+    end;
     blit_length
 
   let read_int32 input =
