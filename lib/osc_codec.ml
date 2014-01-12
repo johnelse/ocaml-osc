@@ -9,9 +9,18 @@ type message = {
   arguments: argument list;
 }
 
+type time = {
+  seconds: int32;
+  fraction: int32;
+}
+
+type timetag =
+  | Immediate
+  | Time of time
+
 type packet =
   | Message of message
-  | Bundle of packet list
+  | Bundle of (timetag * packet list)
 
 exception Missing_typetags
 exception Unsupported_typetag of char
@@ -76,6 +85,13 @@ module Make (Io : Osc_transport.IO) = struct
             argument output arg >>= (fun () -> encode rest)
         in
         encode args)
+
+    let timetag output = function
+      | Immediate ->
+        Io.write_int32 output 0l >>= (fun () -> Io.write_int32 output 1l)
+      | Time {seconds; fraction} ->
+        Io.write_int32 output seconds
+        >>= (fun () -> Io.write_int32 output fraction)
   end
 
   module Decode = struct
@@ -141,5 +157,13 @@ module Make (Io : Osc_transport.IO) = struct
               >>= (fun arg -> decode (typetag_index + 1) (arg :: acc))
           in
           decode 0 [] >|= List.rev)
+
+    let timetag input =
+      Io.read_int32 input
+      >>= (fun seconds -> Io.read_int32 input
+      >>= (fun fraction ->
+        match seconds, fraction with
+        | 0l, 1l -> Io.return Immediate
+        | _ -> Io.return (Time {seconds; fraction})))
   end
 end
