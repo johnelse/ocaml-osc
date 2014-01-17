@@ -5,5 +5,5 @@ obuild-ver: 1
 
 library osc
   src-dir: lib
-  modules: osc_codec, osc_string, osc_transport
+  modules: osc, osc_codec, osc_string, osc_transport
   build-deps: ocplib-endian

@@ -1,27 +1,3 @@
-type argument =
-  | Float32 of float
-  | Int32 of int32
-  | Str of string
-  | Blob of string
-
-type message = {
-  address: string;
-  arguments: argument list;
-}
-
-type time = {
-  seconds: int32;
-  fraction: int32;
-}
-
-type timetag =
-  | Immediate
-  | Time of time
-
-type packet =
-  | Message of message
-  | Bundle of (timetag * packet list)
-
 exception Missing_typetags
 exception Unsupported_typetag of char
 
@@ -59,17 +35,17 @@ module Make (Io : Osc_transport.IO) = struct
       >>= (fun () -> Io.write_string output (b ^ suffix))
 
     let argument output = function
-      | Float32 f -> float32 output f
-      | Int32 i -> int32 output i
-      | Str s -> string output s
-      | Blob b -> blob output b
+      | Osc.Float32 f -> float32 output f
+      | Osc.Int32 i -> int32 output i
+      | Osc.Str s -> string output s
+      | Osc.Blob b -> blob output b
 
     let arguments output args =
       let typetag_of_argument = function
-        | Float32 _ -> 'f'
-        | Int32 _ -> 'i'
-        | Str _ -> 's'
-        | Blob _ -> 'b'
+        | Osc.Float32 _ -> 'f'
+        | Osc.Int32 _ -> 'i'
+        | Osc.Str _ -> 's'
+        | Osc.Blob _ -> 'b'
       in
       (* Encode the typetags as a string. *)
       let typetag_string = String.create (List.length args) in
@@ -86,7 +62,8 @@ module Make (Io : Osc_transport.IO) = struct
         in
         encode args)
 
-    let timetag output = function
+    let timetag output =
+      let open Osc in function
       | Immediate ->
         Io.write_int32 output 0l >>= (fun () -> Io.write_int32 output 1l)
       | Time {seconds; fraction} ->
@@ -139,10 +116,10 @@ module Make (Io : Osc_transport.IO) = struct
           | _ -> Io.raise_exn End_of_file))
 
     let argument input = function
-      | 'f' -> (float32 input) >|= (fun f -> Float32 f)
-      | 'i' -> (int32 input) >|= (fun i -> Int32 i)
-      | 's' -> (string input) >|= (fun s -> Str s)
-      | 'b' -> (blob input) >|= (fun b -> Blob b)
+      | 'f' -> (float32 input) >|= (fun f -> Osc.Float32 f)
+      | 'i' -> (int32 input) >|= (fun i -> Osc.Int32 i)
+      | 's' -> (string input) >|= (fun s -> Osc.Str s)
+      | 'b' -> (blob input) >|= (fun b -> Osc.Blob b)
       | typetag -> Io.raise_exn (Unsupported_typetag typetag)
 
     let arguments input =
@@ -163,7 +140,7 @@ module Make (Io : Osc_transport.IO) = struct
       >>= (fun seconds -> Io.read_int32 input
       >>= (fun fraction ->
         match seconds, fraction with
-        | 0l, 1l -> Io.return Immediate
-        | _ -> Io.return (Time {seconds; fraction})))
+        | 0l, 1l -> Io.return Osc.Immediate
+        | _ -> Io.return Osc.(Time {seconds; fraction})))
   end
 end
