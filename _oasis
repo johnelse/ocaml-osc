@@ -24,7 +24,7 @@ Library osc_unix
   Build$:              flag(unix)
   Path:                unix
   BuildDepends:        osc
-  Findlibname:         osc
+  Findlibname:         unix
   Findlibparent:       osc
   ByteOpt:             -bin-annot
   NativeOpt:           -bin-annot
