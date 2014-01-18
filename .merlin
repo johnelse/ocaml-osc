@@ -1,4 +1,5 @@
 PKG ocplib-endian
 S lib
 
-B dist/build/lib-osc
+B _build/lib
+B _build/unix

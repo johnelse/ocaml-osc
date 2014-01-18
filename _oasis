@@ -1,0 +1,31 @@
+OASISFormat:  0.3
+Name:                  osc
+Version:               0.1.0
+Synopsis:              Open Sound Control library
+License:               MIT
+Authors:               John Else
+Copyrights:            (C) 2014 John Else
+BuildTools:            ocamlbuild
+Plugins:               META (0.3)
+
+Flag unix
+  Description:         build the Unix library
+  Default:             false
+
+Library osc
+  Path:                lib
+  BuildDepends:        ocplib-endian
+  Findlibname:         osc
+  ByteOpt:             -bin-annot
+  NativeOpt:           -bin-annot
+  Modules:             Osc, Osc_codec, Osc_string, Osc_transport
+
+Library osc_unix
+  Build$:              flag(unix)
+  Path:                unix
+  BuildDepends:        osc
+  Findlibname:         osc
+  Findlibparent:       osc
+  ByteOpt:             -bin-annot
+  NativeOpt:           -bin-annot
+  Modules:             Osc_unix

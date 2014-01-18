@@ -1,16 +1,29 @@
-dist/build/lib-osc/osc.cmxa:
-	obuild configure
-	obuild build
+all: build
 
-.PHONY: clean install uninstall
+UNIX_FLAG=--enable-unix
 
-clean:
-	rm -rf dist
+NAME=osc
+J=4
 
-install:
-	ocamlfind install osc lib/META \
-		$(wildcard dist/build/lib-osc/*) \
-		$(wildcard dist/build/lib-osc_unix/*)
+setup.ml: _oasis
+	oasis setup
+
+setup.data: setup.ml
+	ocaml setup.ml -configure $(UNIX_FLAG)
+
+build: setup.data setup.ml
+	ocaml setup.ml -build -j $(J)
+
+install: setup.data setup.ml
+	ocaml setup.ml -install
 
 uninstall:
-	ocamlfind remove osc
+	ocamlfind remove $(NAME)
+
+reinstall: setup.ml
+	ocamlfind remove $(NAME) || true
+	ocaml setup.ml -reinstall
+
+clean:
+	ocamlbuild -clean
+	rm -f setup.data setup.log

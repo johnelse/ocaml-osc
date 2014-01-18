@@ -1,0 +1,31 @@
+# OASIS_START
+# DO NOT EDIT (digest: 316750f18aadefcb0a09b1cd12cc23f0)
+# Ignore VCS directories, you can use the same kind of rule outside 
+# OASIS_START/STOP if you want to exclude directories that contains 
+# useless stuff for the build process
+<**/.svn>: -traverse
+<**/.svn>: not_hygienic
+".bzr": -traverse
+".bzr": not_hygienic
+".hg": -traverse
+".hg": not_hygienic
+".git": -traverse
+".git": not_hygienic
+"_darcs": -traverse
+"_darcs": not_hygienic
+# Library osc
+"lib/osc.cmxs": use_osc
+<lib/osc.{cma,cmxa}>: oasis_library_osc_byte
+<lib/*.ml{,i}>: oasis_library_osc_byte
+<lib/osc.{cma,cmxa}>: oasis_library_osc_native
+<lib/*.ml{,i}>: oasis_library_osc_native
+<lib/*.ml{,i}>: pkg_ocplib-endian
+# Library osc_unix
+"unix/osc_unix.cmxs": use_osc_unix
+<unix/osc_unix.{cma,cmxa}>: oasis_library_osc_unix_byte
+<unix/*.ml{,i}>: oasis_library_osc_unix_byte
+<unix/osc_unix.{cma,cmxa}>: oasis_library_osc_unix_native
+<unix/*.ml{,i}>: oasis_library_osc_unix_native
+<unix/*.ml{,i}>: use_osc
+<unix/*.ml{,i}>: pkg_ocplib-endian
+# OASIS_STOP
