@@ -29,3 +29,14 @@ Library osc_unix
   ByteOpt:             -bin-annot
   NativeOpt:           -bin-annot
   Modules:             Osc_unix
+
+Executable osc_test
+  Build$:              flag(tests)
+  Path:                test
+  MainIs:              osc_test.ml
+  Install:             false
+  BuildDepends:        oUnit, osc.unix
+
+Test osc_test
+  Command:             $(osc_test)
+  WorkingDirectory:    test

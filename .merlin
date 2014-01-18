@@ -1,6 +1,8 @@
-PKG ocplib-endian
+PKG ocplib-endian oUnit
 S lib
+S test
 S unix
 
 B _build/lib
+B _build/test
 B _build/unix

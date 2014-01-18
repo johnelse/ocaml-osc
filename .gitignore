@@ -1,3 +1,4 @@
+*.byte
 *.swp
 
 _build
