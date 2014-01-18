@@ -1,5 +1,6 @@
 PKG ocplib-endian
 S lib
+S unix
 
 B _build/lib
 B _build/unix
