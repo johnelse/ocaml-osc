@@ -22,16 +22,20 @@ module Io = struct
 
   type output = out_channel
 
-  let write_char = output_char
+  let write_char output c =
+    output_char output c;
+    flush output
 
   let write_string output str =
     let length = String.length str in
-    Pervasives.output output str 0 length
+    Pervasives.output output str 0 length;
+    flush output
 
   let write_int32 output i =
     let tmp = String.create int32_chars in
     EndianString.BigEndian.set_int32 tmp 0 i;
-    write_string output tmp
+    write_string output tmp;
+    flush output
 end
 
 module Codec = Osc_codec.Make(Io)
