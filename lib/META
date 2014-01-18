@@ -6,3 +6,14 @@ archive(byte, plugin) = "osc.cma"
 archive(native) = "osc.cmxa"
 archive(native, plugin) = "osc.cmxs"
 exists_if = "osc.cma"
+
+package "unix" (
+  version = "0.1.0"
+  description = "Open Sound Control library for Unix"
+  requires = "osc"
+  archive(byte) = "osc_unix.cma"
+  archive(byte, plugin) = "osc_unix.cma"
+  archive(native) = "osc_unix.cmxa"
+  archive(native, plugin) = "osc_unix.cmxs"
+  exists_if = "osc_unix.cma"
+)

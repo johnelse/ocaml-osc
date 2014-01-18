@@ -7,3 +7,8 @@ library osc
   src-dir: lib
   modules: osc, osc_codec, osc_string, osc_transport
   build-deps: ocplib-endian
+
+library osc_unix
+  src-dir: unix
+  modules: osc_unix
+  build-deps: osc

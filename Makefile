@@ -8,7 +8,9 @@ clean:
 	rm -rf dist
 
 install:
-	ocamlfind install osc lib/META $(wildcard dist/build/lib-osc/*)
+	ocamlfind install osc lib/META \
+		$(wildcard dist/build/lib-osc/*) \
+		$(wildcard dist/build/lib-osc_unix/*)
 
 uninstall:
 	ocamlfind remove osc
