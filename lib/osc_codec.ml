@@ -37,14 +37,14 @@ module Make (Io : Osc_transport.IO) = struct
     let argument output = function
       | Osc.Float32 f -> float32 output f
       | Osc.Int32 i -> int32 output i
-      | Osc.Str s -> string output s
+      | Osc.String s -> string output s
       | Osc.Blob b -> blob output b
 
     let arguments output args =
       let typetag_of_argument = function
         | Osc.Float32 _ -> 'f'
         | Osc.Int32 _ -> 'i'
-        | Osc.Str _ -> 's'
+        | Osc.String _ -> 's'
         | Osc.Blob _ -> 'b'
       in
       (* Encode the typetags as a string. *)
@@ -122,7 +122,7 @@ module Make (Io : Osc_transport.IO) = struct
     let argument input = function
       | 'f' -> (float32 input) >|= (fun f -> Osc.Float32 f)
       | 'i' -> (int32 input) >|= (fun i -> Osc.Int32 i)
-      | 's' -> (string input) >|= (fun s -> Osc.Str s)
+      | 's' -> (string input) >|= (fun s -> Osc.String s)
       | 'b' -> (blob input) >|= (fun b -> Osc.Blob b)
       | typetag -> Io.raise_exn (Unsupported_typetag typetag)
 

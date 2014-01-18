@@ -1,7 +1,7 @@
 type argument =
   | Float32 of float
   | Int32 of int32
-  | Str of string
+  | String of string
   | Blob of string
 
 type message = {
