@@ -69,6 +69,10 @@ module Make (Io : Osc_transport.IO) = struct
       | Time {seconds; fraction} ->
         Io.write_int32 output seconds
         >>= (fun () -> Io.write_int32 output fraction)
+
+    let message output m =
+      string output m.Osc.address
+      >>= (fun () -> arguments output m.Osc.arguments)
   end
 
   module Decode = struct
@@ -142,5 +146,10 @@ module Make (Io : Osc_transport.IO) = struct
         match seconds, fraction with
         | 0l, 1l -> Io.return Osc.Immediate
         | _ -> Io.return Osc.(Time {seconds; fraction})))
+
+    let message input =
+      string input
+      >>= (fun address -> arguments input
+      >>= (fun args -> Io.return {Osc.address = address; arguments = args}))
   end
 end
