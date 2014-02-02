@@ -1,4 +1,3 @@
-exception Missing_typetags
 exception Unsupported_typetag of char
 
 (* Strings are padding with 1-4 null characters to make the total
