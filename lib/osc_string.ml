@@ -13,16 +13,7 @@ module Io = struct
 
   type input = string_input
 
-  let read_char input =
-    if input.pos >= (String.length input.data)
-    then raise End_of_file
-    else begin
-      let c = input.data.[input.pos] in
-      input.pos <- input.pos + 1;
-      c
-    end
-
-  let read_string input str offset length =
+  let read input str offset length =
     let data_length = String.length input.data in
     let blit_length =
       if (input.pos + length) > data_length
@@ -35,21 +26,11 @@ module Io = struct
     end;
     blit_length
 
-  let read_int32 input =
-    let i = EndianString.BigEndian.get_int32 input.data input.pos in
-    input.pos <- input.pos + 4;
-    i
-
   type output = Buffer.t
 
-  let write_char = Buffer.add_char
-
-  let write_string = Buffer.add_string
-
-  let write_int32 output i=
-    let tmp = String.create 4 in
-    EndianString.BigEndian.set_int32 tmp 0 i;
-    Buffer.add_string output tmp
+  let write output str offset length =
+    Buffer.add_substring output str offset length;
+    length
 end
 
 module Codec = Osc_codec.Make(Io)

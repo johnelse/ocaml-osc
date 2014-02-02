@@ -47,20 +47,16 @@ let assert_messages_equal message1 message2 =
 
 let test_send_message () =
   bracket
-    (fun () ->
-      let infd, outfd = Unix.pipe () in
-      let inchan = Unix.in_channel_of_descr infd in
-      let outchan = Unix.out_channel_of_descr outfd in
-      inchan, outchan)
-    (fun (inchan, outchan) ->
+    (fun () -> Unix.pipe ())
+    (fun (infd, outfd) ->
       Osc_unix.Codec.(
-        Encode.message outchan test_message;
-        let received_message = Decode.message inchan in
+        Encode.message outfd test_message;
+        let received_message = Decode.message infd in
         assert_messages_equal test_message received_message
       ))
-    (fun (inchan, outchan) ->
-      close_out outchan;
-      close_in inchan)
+    (fun (infd, outfd) ->
+      Unix.close outfd;
+      Unix.close infd)
     ()
 
 let base_suite =
