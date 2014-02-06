@@ -8,6 +8,10 @@ Copyrights:            (C) 2014 John Else
 BuildTools:            ocamlbuild
 Plugins:               META (0.3)
 
+Flag lwt
+  Description:         build the Lwt library
+  Default:             false
+
 Flag unix
   Description:         build the Unix library
   Default:             false
@@ -19,6 +23,16 @@ Library osc
   ByteOpt:             -bin-annot
   NativeOpt:           -bin-annot
   Modules:             Osc, Osc_codec, Osc_string, Osc_transport
+
+Library osc_lwt
+  Build$:              flag(lwt)
+  Path:                lwt
+  BuildDepends:        lwt, osc
+  Findlibname:         lwt
+  Findlibparent:       osc
+  ByteOpt:             -bin-annot
+  NativeOpt:           -bin-annot
+  Modules:             Osc_lwt
 
 Library osc_unix
   Build$:              flag(unix)

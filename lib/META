@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: 5c5f05dfeefab762bf825fb063eee2ad)
+# DO NOT EDIT (digest: ca6c7f7fe9a73a3866a80d9e034b48c2)
 version = "0.1.0"
 description = "Open Sound Control library"
 requires = "ocplib-endian"
@@ -17,6 +17,17 @@ package "unix" (
  archive(native) = "osc_unix.cmxa"
  archive(native, plugin) = "osc_unix.cmxs"
  exists_if = "osc_unix.cma"
+)
+
+package "lwt" (
+ version = "0.1.0"
+ description = "Open Sound Control library"
+ requires = "lwt osc"
+ archive(byte) = "osc_lwt.cma"
+ archive(byte, plugin) = "osc_lwt.cma"
+ archive(native) = "osc_lwt.cmxa"
+ archive(native, plugin) = "osc_lwt.cmxs"
+ exists_if = "osc_lwt.cma"
 )
 # OASIS_STOP
 

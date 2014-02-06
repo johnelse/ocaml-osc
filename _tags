@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: 78e9b85fdbb6177a74313f108343e161)
+# DO NOT EDIT (digest: 6ba07106513bdc9dc03a87701f8a0be1)
 # Ignore VCS directories, you can use the same kind of rule outside 
 # OASIS_START/STOP if you want to exclude directories that contains 
 # useless stuff for the build process
@@ -20,6 +20,15 @@
 <lib/osc.{cma,cmxa}>: oasis_library_osc_native
 <lib/*.ml{,i}>: oasis_library_osc_native
 <lib/*.ml{,i}>: pkg_ocplib-endian
+# Library osc_lwt
+"lwt/osc_lwt.cmxs": use_osc_lwt
+<lwt/osc_lwt.{cma,cmxa}>: oasis_library_osc_lwt_byte
+<lwt/*.ml{,i}>: oasis_library_osc_lwt_byte
+<lwt/osc_lwt.{cma,cmxa}>: oasis_library_osc_lwt_native
+<lwt/*.ml{,i}>: oasis_library_osc_lwt_native
+<lwt/*.ml{,i}>: use_osc
+<lwt/*.ml{,i}>: pkg_lwt
+<lwt/*.ml{,i}>: pkg_ocplib-endian
 # Library osc_unix
 "unix/osc_unix.cmxs": use_osc_unix
 <unix/osc_unix.{cma,cmxa}>: oasis_library_osc_unix_byte
