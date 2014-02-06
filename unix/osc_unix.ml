@@ -1,5 +1,3 @@
-let int32_chars = 4
-
 module Io = struct
   type 'a t = 'a
   let (>>=) x f = f x
