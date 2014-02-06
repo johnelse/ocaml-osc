@@ -12,7 +12,27 @@ let blob_padding_of_length length =
   | 0 -> 0
   | x -> 4 - x
 
-module Make (Io : Osc_transport.IO) = struct
+module type Codec = sig
+  type 'a t
+  type input
+  type output
+
+  module Decode : sig
+    val message : input -> Osc.message t
+  end
+
+  module Encode : sig
+    val message : output -> Osc.message -> unit t
+  end
+end
+
+module Make (Io : Osc_transport.IO)
+  : (Codec with
+      type 'a t := 'a Io.t and
+      type input := Io.input and
+      type output := Io.output) =
+struct
+
   open Io
 
   let int32_chars = 4
