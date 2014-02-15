@@ -1,3 +1,4 @@
+exception Missing_typetag_string
 exception Unsupported_typetag of char
 
 (* Strings are padding with 1-4 null characters to make the total
@@ -96,10 +97,11 @@ struct
         | Osc.String _ -> 's'
         | Osc.Blob _ -> 'b'
       in
-      (* Encode the typetags as a string. *)
-      let typetag_string = String.create (List.length args) in
+      (* Encode the typetags as a string, prefixed with a comma. *)
+      let typetag_string = String.create ((List.length args) + 1) in
+      typetag_string.[0] <- ',';
       List.iteri
-        (fun index arg -> typetag_string.[index] <- typetag_of_argument arg)
+        (fun index arg -> typetag_string.[index + 1] <- typetag_of_argument arg)
         args;
       string output typetag_string
         (* Encode each argument. *)
@@ -178,15 +180,19 @@ struct
     let arguments input =
       string input >>=
         (fun typetag_string ->
-          let typetag_count = String.length typetag_string in
-          let rec decode typetag_index acc =
-            if typetag_index = typetag_count
-            then Io.return acc
-            else
-              argument input typetag_string.[typetag_index]
-              >>= (fun arg -> decode (typetag_index + 1) (arg :: acc))
-          in
-          decode 0 [] >|= List.rev)
+          if typetag_string.[0] <> ','
+          then Io.raise_exn Missing_typetag_string
+          else begin
+            let typetag_count = (String.length typetag_string) - 1 in
+            let rec decode typetag_position acc =
+              if typetag_position > typetag_count
+              then Io.return acc
+              else
+                argument input typetag_string.[typetag_position]
+                >>= (fun arg -> decode (typetag_position + 1) (arg :: acc))
+            in
+            decode 1 [] >|= List.rev
+          end)
 
     let timetag input =
       read_int32 input
