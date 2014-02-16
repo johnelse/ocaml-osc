@@ -105,8 +105,8 @@ struct
         (fun index arg -> typetag_string.[index + 1] <- typetag_of_argument arg)
         args;
       string output typetag_string
-        (* Encode each argument. *)
       >>= (fun () ->
+        (* Encode each argument. *)
         let rec encode = function
           | [] -> Io.return ()
           | arg :: rest ->
@@ -181,21 +181,21 @@ struct
       | typetag -> Io.raise_exn (Unsupported_typetag typetag)
 
     let arguments input =
-      string input >>=
-        (fun typetag_string ->
-          if typetag_string.[0] <> ','
-          then Io.raise_exn Missing_typetag_string
-          else begin
-            let typetag_count = (String.length typetag_string) - 1 in
-            let rec decode typetag_position acc =
-              if typetag_position > typetag_count
-              then Io.return acc
-              else
-                argument input typetag_string.[typetag_position]
-                >>= (fun arg -> decode (typetag_position + 1) (arg :: acc))
-            in
-            decode 1 [] >|= List.rev
-          end)
+      string input
+      >>= (fun typetag_string ->
+        if typetag_string.[0] <> ','
+        then Io.raise_exn Missing_typetag_string
+        else begin
+          let typetag_count = (String.length typetag_string) - 1 in
+          let rec decode typetag_position acc =
+            if typetag_position > typetag_count
+            then Io.return acc
+            else
+              argument input typetag_string.[typetag_position]
+              >>= (fun arg -> decode (typetag_position + 1) (arg :: acc))
+          in
+          decode 1 [] >|= List.rev
+        end)
 
     let timetag input =
       read_int32 input
