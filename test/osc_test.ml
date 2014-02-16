@@ -1,6 +1,6 @@
 open OUnit
 
-let test_message = Osc.({
+let test_message_packet = Osc.(Message {
   address = "/foo/bar";
   arguments = [
     Blob "baz";
@@ -45,14 +45,24 @@ let assert_messages_equal message1 message2 =
     message1.arguments
     message2.arguments
 
+let assert_packets_equal packet1 packet2 =
+  let open Osc in
+  match packet1, packet2 with
+  | Message message1, Message message2 ->
+    assert_messages_equal message1 message2
+  | Bundle _, Bundle _ ->
+    assert_failure "Bundles not implemented"
+  | _, _ ->
+    assert_failure "Packet types differ"
+
 let test_send_message () =
   bracket
     (fun () -> Unix.pipe ())
     (fun (infd, outfd) ->
       Osc_unix.Codec.(
-        Encode.message outfd test_message;
-        let received_message = Decode.message infd in
-        assert_messages_equal test_message received_message
+        Encode.packet outfd test_message_packet;
+        let received_message_packet = Decode.packet infd in
+        assert_packets_equal test_message_packet received_message_packet
       ))
     (fun (infd, outfd) ->
       Unix.close outfd;

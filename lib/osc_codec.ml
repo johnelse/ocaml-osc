@@ -1,4 +1,5 @@
 exception Missing_typetag_string
+exception Not_implemented
 exception Unsupported_typetag of char
 
 (* Strings are padding with 1-4 null characters to make the total
@@ -19,11 +20,11 @@ module type Codec = sig
   type output
 
   module Decode : sig
-    val message : input -> Osc.message t
+    val packet : input -> Osc.packet t
   end
 
   module Encode : sig
-    val message : output -> Osc.message -> unit t
+    val packet : output -> Osc.packet -> unit t
   end
 end
 
@@ -121,9 +122,11 @@ struct
         write_int32 output seconds
         >>= (fun () -> write_int32 output fraction)
 
-    let message output m =
-      string output m.Osc.address
-      >>= (fun () -> arguments output m.Osc.arguments)
+    let packet output = function
+      | Osc.Bundle _ -> Io.raise_exn Not_implemented
+      | Osc.Message msg ->
+        string output msg.Osc.address
+        >>= (fun () -> arguments output msg.Osc.arguments)
   end
 
   module Decode = struct
@@ -202,9 +205,13 @@ struct
         | 0l, 1l -> Io.return Osc.Immediate
         | _ -> Io.return Osc.(Time {seconds; fraction})))
 
-    let message input =
+    let packet input =
       string input
-      >>= (fun address -> arguments input
-      >>= (fun args -> Io.return {Osc.address = address; arguments = args}))
+      >>= (function
+        | "#bundle" -> Io.raise_exn Not_implemented
+        | address ->
+          arguments input
+          >>= (fun args ->
+            Io.return (Osc.Message {Osc.address = address; arguments = args})))
   end
 end
