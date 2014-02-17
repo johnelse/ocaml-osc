@@ -22,7 +22,7 @@ Library osc
   Findlibname:         osc
   ByteOpt:             -bin-annot
   NativeOpt:           -bin-annot
-  Modules:             Osc, Osc_codec, Osc_string, Osc_transport
+  Modules:             Osc, Osc_string, Osc_transport
 
 Library osc_lwt
   Build$:              flag(lwt)

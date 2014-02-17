@@ -6,11 +6,13 @@ module Io = struct
 
   let raise_exn = raise
 
-  type input = Unix.file_descr
-  let read = Unix.read
+  type file_descr = Unix.file_descr
+  type msg_flag = Unix.msg_flag
+  type sockaddr = Unix.sockaddr
 
-  type output = Unix.file_descr
-  let write = Unix.write
+  let bind = Unix.bind
+
+  let recvfrom = Unix.recvfrom
+
+  let sendto = Unix.sendto
 end
-
-module Codec = Osc_codec.Make(Io)

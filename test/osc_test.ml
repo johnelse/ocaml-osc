@@ -60,25 +60,10 @@ let test_string_codec () =
   let received_message_packet = Osc_string.to_packet data in
   assert_packets_equal test_message_packet received_message_packet
 
-let test_send_message () =
-  bracket
-    (fun () -> Unix.pipe ())
-    (fun (infd, outfd) ->
-      Osc_unix.Codec.(
-        Encode.packet outfd test_message_packet;
-        let received_message_packet = Decode.packet infd in
-        assert_packets_equal test_message_packet received_message_packet
-      ))
-    (fun (infd, outfd) ->
-      Unix.close outfd;
-      Unix.close infd)
-    ()
-
 let base_suite =
   "base_suite" >:::
     [
       "test_string_codec" >:: test_string_codec;
-      "test_send_message" >:: test_send_message;
     ]
 
 let _ = run_test_tt_main base_suite
