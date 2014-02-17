@@ -55,6 +55,11 @@ let assert_packets_equal packet1 packet2 =
   | _, _ ->
     assert_failure "Packet types differ"
 
+let test_string_codec () =
+  let data = Osc_string.of_packet test_message_packet in
+  let received_message_packet = Osc_string.to_packet data in
+  assert_packets_equal test_message_packet received_message_packet
+
 let test_send_message () =
   bracket
     (fun () -> Unix.pipe ())
@@ -72,6 +77,7 @@ let test_send_message () =
 let base_suite =
   "base_suite" >:::
     [
+      "test_string_codec" >:: test_string_codec;
       "test_send_message" >:: test_send_message;
     ]
 
