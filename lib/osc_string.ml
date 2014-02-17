@@ -34,3 +34,12 @@ module Io = struct
 end
 
 module Codec = Osc_codec.Make(Io)
+
+let of_packet packet =
+  let output = Buffer.create 64 in
+  Codec.Encode.packet output packet;
+  Buffer.contents output
+
+let to_packet data =
+  let input = {data; pos = 0} in
+  Codec.Decode.packet input
