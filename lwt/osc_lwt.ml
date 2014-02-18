@@ -32,8 +32,8 @@ module UdpTransport = struct
     let send_string client addr data =
       let length = String.length data in
       Lwt_unix.sendto client.socket data 0 length [] addr
-      >>= (fun send ->
-        if send <> length
+      >>= (fun sent ->
+        if sent <> length
         then Lwt.fail (Failure "IO error")
         else return ())
   end
