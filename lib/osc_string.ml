@@ -1,3 +1,5 @@
+let (|>) x f = f x
+
 type input = {
   data: string;
   mutable pos: int;
