@@ -60,7 +60,6 @@ let test_string_codec () =
   let received_message_packet = Osc_string.to_packet data in
   assert_packets_equal test_message_packet received_message_packet
 
-
 let test_unix_udp_send_recv () =
   let open Osc_unix.Udp in
   let localhost = Unix.inet_addr_of_string "127.0.0.1" in
