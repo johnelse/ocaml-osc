@@ -33,16 +33,23 @@ module Decode = struct
     Int32.float_of_bits (int32 input)
 
   let string input =
+    (* Look for the first null char after the position marker - this is the
+     * start of the string's padding. *)
     let end_pos = String.index_from input.data input.pos '\000' in
     let string_length = end_pos - input.pos in
     let padding_length = string_padding_of_length string_length in
+    (* Read the string, then move the position marker past the string and its
+     * padding. *)
     let result = String.sub input.data input.pos string_length in
     input.pos <- input.pos + string_length + padding_length;
     result
 
   let blob input =
+    (* Decode the blob length. *)
     let blob_length = Int32.to_int (int32 input) in
     let padding_length = blob_padding_of_length blob_length in
+    (* Read the blob, then move the position marker past the blob and its
+     * padding. *)
     let result = String.sub input.data input.pos blob_length in
     input.pos <- input.pos + blob_length + padding_length;
     result
@@ -55,11 +62,16 @@ module Decode = struct
     | typetag -> raise (Unsupported_typetag typetag)
 
   let arguments input =
+    (* Decode the typetag string. *)
     let typetag_string = string input in
     if typetag_string.[0] <> ','
     then raise Missing_typetag_string
     else begin
       let typetag_count = (String.length typetag_string) - 1 in
+      (* Decode the arguments, moving along the typetag string to detect the
+       * type we're trying to decode. Due to the ',' prefix in the typetag
+       * string, the first typetag is the second character in the typetag
+       * string. *)
       let rec decode typetag_position acc =
         if typetag_position > typetag_count
         then acc
@@ -102,8 +114,10 @@ module Encode = struct
     Buffer.add_string output padding
 
   let blob output b =
+    (* Encode the blob length as an int32. *)
     let blob_length = String.length b in
     int32 output (Int32.of_int blob_length);
+    (* Encode the blob itself, followed by a suitable amount of padding. *)
     Buffer.add_string output b;
     let padding_length = blob_padding_of_length blob_length in
     if padding_length > 0 then begin
@@ -131,6 +145,7 @@ module Encode = struct
       (fun index arg -> typetag_string.[index + 1] <- typetag_of_argument arg)
       args;
     string output typetag_string;
+    (* Encode the values of the arguments. *)
     let rec encode = function
       | [] -> ()
       | arg :: rest ->

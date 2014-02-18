@@ -55,11 +55,15 @@ let assert_packets_equal packet1 packet2 =
   | _, _ ->
     assert_failure "Packet types differ"
 
+(* Serialise a packet to a string; read it back from the string; check that the
+ * resulting packet equals the one we started with. *)
 let test_string_codec () =
   let data = Osc_string.of_packet test_message_packet in
   let received_message_packet = Osc_string.to_packet data in
   assert_packets_equal test_message_packet received_message_packet
 
+(* Start a UDP server listening on localhost; send a packet to localhost and
+ * check that the server receives the same packet. *)
 let test_unix_udp_send_recv () =
   let open Osc_unix.Udp in
   let localhost = Unix.inet_addr_of_string "127.0.0.1" in
