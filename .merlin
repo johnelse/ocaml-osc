@@ -1,4 +1,4 @@
-PKG lwt ocplib-endian oUnit
+PKG lwt ocplib-endian oUnit threads
 S lib
 S lwt
 S test

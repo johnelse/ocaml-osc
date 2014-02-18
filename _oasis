@@ -49,7 +49,7 @@ Executable osc_test
   Path:                test
   MainIs:              osc_test.ml
   Install:             false
-  BuildDepends:        oUnit, osc.unix
+  BuildDepends:        oUnit, osc.unix, threads
 
 Test osc_test
   Command:             $(osc_test)
