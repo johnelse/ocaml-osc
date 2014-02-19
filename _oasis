@@ -49,7 +49,7 @@ Executable test_main
   Path:                test
   MainIs:              test_main.ml
   Install:             false
-  BuildDepends:        oUnit, osc.unix, threads
+  BuildDepends:        oUnit, osc, osc.unix, threads
 
 Test test_main
   Command:             $(test_main)
