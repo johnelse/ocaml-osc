@@ -44,13 +44,13 @@ Library osc_unix
   NativeOpt:           -bin-annot
   Modules:             Osc_unix
 
-Executable osc_test
+Executable test_main
   Build$:              flag(tests)
   Path:                test
-  MainIs:              osc_test.ml
+  MainIs:              test_main.ml
   Install:             false
   BuildDepends:        oUnit, osc.unix, threads
 
-Test osc_test
-  Command:             $(osc_test)
+Test test_main
+  Command:             $(test_main)
   WorkingDirectory:    test
