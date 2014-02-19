@@ -48,7 +48,6 @@ module Make(T : TRANSPORT) = struct
     let destroy = T.Server.destroy
 
     let recv server =
-      T.Server.recv_string server
-      >>= (fun data -> return (Osc_string.to_packet data))
+      T.Server.recv_string server >|= Osc_string.to_packet
   end
 end
