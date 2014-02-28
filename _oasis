@@ -27,7 +27,7 @@ Library osc
 Library osc_lwt
   Build$:              flag(lwt)
   Path:                lwt
-  BuildDepends:        lwt, osc
+  BuildDepends:        lwt, lwt.unix, osc
   Findlibname:         lwt
   Findlibparent:       osc
   ByteOpt:             -bin-annot
