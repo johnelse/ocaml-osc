@@ -58,7 +58,7 @@ module UdpTransport = struct
     let recv_string server =
       match Unix.recvfrom server.socket server.buffer 0 server.buffer_length []
       with
-      | length, sockaddr -> String.sub server.buffer 0 length
+      | length, sockaddr -> String.sub server.buffer 0 length, sockaddr
   end
 end
 

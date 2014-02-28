@@ -15,7 +15,7 @@ let test_udp_send_recv () =
       client, server)
     (fun (client, server) ->
       let server_receive_thread channel =
-        let packet = Server.recv server in
+        let packet, _ = Server.recv server in
         Event.sync (Event.send channel packet)
       in
       let channel = Event.new_channel () in

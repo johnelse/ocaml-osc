@@ -62,7 +62,8 @@ module UdpTransport = struct
 
     let recv_string server =
       Lwt_unix.recvfrom server.socket server.buffer 0 server.buffer_length []
-      >>= (fun (length, sockaddr) -> return (String.sub server.buffer 0 length))
+      >>= (fun (length, sockaddr) ->
+        return (String.sub server.buffer 0 length, sockaddr))
   end
 end
 

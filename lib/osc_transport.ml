@@ -21,7 +21,7 @@ module type TRANSPORT = sig
     type t
     val create : sockaddr -> int -> t Io.t
     val destroy : t -> unit Io.t
-    val recv_string : t -> string Io.t
+    val recv_string : t -> (string * sockaddr) Io.t
   end
 end
 
@@ -48,6 +48,7 @@ module Make(T : TRANSPORT) = struct
     let destroy = T.Server.destroy
 
     let recv server =
-      T.Server.recv_string server >|= Osc_string.to_packet
+      T.Server.recv_string server
+      >|= (fun (data, addr) -> Osc_string.to_packet data, addr)
   end
 end
