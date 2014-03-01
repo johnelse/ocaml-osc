@@ -45,7 +45,7 @@ Library osc_unix
   Modules:             Osc_unix
 
 Executable test_main
-  Build$:              flag(tests)
+  Build$:              flag(tests) && flag(unix)
   Path:                test
   MainIs:              test_main.ml
   Install:             false
