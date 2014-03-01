@@ -53,6 +53,7 @@ Executable test_lwt
 
 Test test_lwt
   Command:             $(test_lwt)
+  Run$:                flag(lwt)
   WorkingDirectory:    test
 
 Executable test_main
@@ -64,4 +65,5 @@ Executable test_main
 
 Test test_main
   Command:             $(test_main)
+  Run$:                flag(unix)
   WorkingDirectory:    test
