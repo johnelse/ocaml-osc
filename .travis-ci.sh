@@ -1,5 +1,5 @@
 # OPAM packages needed to build tests.
-OPAM_PACKAGES="ocplib-endian ounit"
+OPAM_PACKAGES="ocplib-endian ounit lwt"
 
 
 case "$OCAML_VERSION,$OPAM_VERSION" in
