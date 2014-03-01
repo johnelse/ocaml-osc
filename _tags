@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: 28a00387d73b99cf811be9919b9774a7)
+# DO NOT EDIT (digest: a5ef540a216cefe9d5fb92c522998f52)
 # Ignore VCS directories, you can use the same kind of rule outside 
 # OASIS_START/STOP if you want to exclude directories that contains 
 # useless stuff for the build process
@@ -38,6 +38,16 @@
 <unix/*.ml{,i}>: oasis_library_osc_unix_native
 <unix/*.ml{,i}>: use_osc
 <unix/*.ml{,i}>: pkg_ocplib-endian
+# Executable test_lwt
+"test/test_lwt.byte": use_osc_lwt
+"test/test_lwt.byte": use_osc
+"test/test_lwt.byte": pkg_oUnit
+"test/test_lwt.byte": pkg_lwt
+"test/test_lwt.byte": pkg_lwt.unix
+"test/test_lwt.byte": pkg_ocplib-endian
+<test/*.ml{,i}>: use_osc_lwt
+<test/*.ml{,i}>: pkg_lwt
+<test/*.ml{,i}>: pkg_lwt.unix
 # Executable test_main
 "test/test_main.byte": use_osc_unix
 "test/test_main.byte": use_osc

@@ -44,6 +44,17 @@ Library osc_unix
   NativeOpt:           -bin-annot
   Modules:             Osc_unix
 
+Executable test_lwt
+  Build$:              flag(lwt) && flag(tests)
+  Path:                test
+  MainIs:              test_lwt.ml
+  Install:             false
+  BuildDepends:        oUnit, osc, osc.lwt
+
+Test test_lwt
+  Command:             $(test_lwt)
+  WorkingDirectory:    test
+
 Executable test_main
   Build$:              flag(tests) && flag(unix)
   Path:                test
