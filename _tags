@@ -60,3 +60,4 @@
 <test/*.ml{,i}>: pkg_threads
 <test/*.ml{,i}>: pkg_ocplib-endian
 # OASIS_STOP
+<lib>: include

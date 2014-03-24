@@ -67,3 +67,11 @@ Test test_main
   Command:             $(test_main)
   Run$:                flag(unix)
   WorkingDirectory:    test
+
+Document api
+  Title: Pure OCaml Open Source Control implementation
+  Type: ocamlbuild (0.3)
+  BuildTools+: ocamldoc
+  XOcamlbuildModules: Osc, Osc_string
+  XOcamlBuildPath: doc
+  Install: false
