@@ -56,15 +56,26 @@ Test test_lwt
   Run$:                flag(lwt)
   WorkingDirectory:    test
 
-Executable test_main
+Executable test_string
+  Build$:              flag(tests)
+  Path:                test
+  MainIs:              test_string.ml
+  Install:             false
+  BuildDepends:        oUnit, osc, threads
+
+Test test_string
+  Command:             $(test_string)
+  WorkingDirectory:    test
+
+Executable test_unix
   Build$:              flag(tests) && flag(unix)
   Path:                test
-  MainIs:              test_main.ml
+  MainIs:              test_unix.ml
   Install:             false
   BuildDepends:        oUnit, osc, osc.unix, threads
 
-Test test_main
-  Command:             $(test_main)
+Test test_unix
+  Command:             $(test_unix)
   Run$:                flag(unix)
   WorkingDirectory:    test
 
