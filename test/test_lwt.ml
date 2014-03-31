@@ -38,4 +38,6 @@ let suite =
       "test_udp_send_recv" >:: test_udp_send_recv;
     ]
 
-let _ = run_test_tt_main suite
+let _ =
+  print_endline "-------- Lwt tests --------";
+  run_test_tt_main suite

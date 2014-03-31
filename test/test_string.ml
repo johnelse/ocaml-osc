@@ -15,4 +15,6 @@ let suite =
       "test_message_encode_decode" >:: test_message_encode_decode;
     ]
 
-let _ = run_test_tt_main suite
+let _ =
+  print_endline "-------- String tests --------";
+  run_test_tt_main suite
