@@ -72,6 +72,6 @@ Document api
   Title: Pure OCaml Open Source Control implementation
   Type: ocamlbuild (0.3)
   BuildTools+: ocamldoc
-  XOcamlbuildModules: Osc, Osc_string
+  XOcamlbuildModules: Osc, Osc_string, Osc_transport
   XOcamlBuildPath: doc
   Install: false
