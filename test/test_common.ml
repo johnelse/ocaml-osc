@@ -1,6 +1,11 @@
 open OUnit
 
-let test_message_packet = Osc.(Message {
+let test_empty_packet = Osc.(Message {
+  address = "/foo/bar";
+  arguments = [];
+})
+
+let test_packet_with_args = Osc.(Message {
   address = "/foo/bar";
   arguments = [
     Blob "baz";
@@ -9,6 +14,11 @@ let test_message_packet = Osc.(Message {
     Float32 123.456;
   ];
 })
+
+let test_packets = [
+  "empty_packet", test_empty_packet;
+  "packet_with_args", test_packet_with_args;
+]
 
 let are_arguments_equal arg1 arg2 =
   let open Osc in

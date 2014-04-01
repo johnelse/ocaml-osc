@@ -1,6 +1,6 @@
 open OUnit
 
-let test_udp_send_recv () =
+let test_udp_send_recv packet =
   let open Lwt in
   let open Osc_lwt.Udp in
   let localhost = Unix.inet_addr_of_string "127.0.0.1" in
@@ -19,12 +19,12 @@ let test_udp_send_recv () =
         (Lwt.async (fun () ->
           Server.recv server
           >>= (fun (packet, _) -> Lwt_mvar.put mvar packet));
-        Client.send client addr Test_common.test_message_packet
+        Client.send client addr packet
         >>= (fun () -> Lwt_mvar.take mvar
-        >>= (fun received_message_packet ->
+        >>= (fun received_packet ->
           Test_common.assert_packets_equal
-            Test_common.test_message_packet
-            received_message_packet;
+            packet
+            received_packet;
           return ()))))
     (fun (client, server) ->
       Lwt_main.run
@@ -32,10 +32,18 @@ let test_udp_send_recv () =
         >>= (fun () -> Server.destroy server)))
     ()
 
+let udp_send_recv =
+  "udp_send_recv" >::: (
+    List.map
+      (fun (name, packet) ->
+        name >:: (fun () -> test_udp_send_recv packet))
+      Test_common.test_packets
+  )
+
 let suite =
   "lwt_suite" >:::
     [
-      "test_udp_send_recv" >:: test_udp_send_recv;
+      udp_send_recv;
     ]
 
 let _ =
