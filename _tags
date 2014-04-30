@@ -1,7 +1,7 @@
 # OASIS_START
-# DO NOT EDIT (digest: a38f5d21fc2342092ac74c96151f3a0f)
-# Ignore VCS directories, you can use the same kind of rule outside 
-# OASIS_START/STOP if you want to exclude directories that contains 
+# DO NOT EDIT (digest: 14c354fbb14d6cc6022c48c61d18c7f7)
+# Ignore VCS directories, you can use the same kind of rule outside
+# OASIS_START/STOP if you want to exclude directories that contains
 # useless stuff for the build process
 <**/.svn>: -traverse
 <**/.svn>: not_hygienic
@@ -26,43 +26,43 @@
 <lwt/*.ml{,i}>: oasis_library_osc_lwt_byte
 <lwt/osc_lwt.{cma,cmxa}>: oasis_library_osc_lwt_native
 <lwt/*.ml{,i}>: oasis_library_osc_lwt_native
-<lwt/*.ml{,i}>: use_osc
 <lwt/*.ml{,i}>: pkg_lwt
 <lwt/*.ml{,i}>: pkg_lwt.unix
 <lwt/*.ml{,i}>: pkg_ocplib-endian
+<lwt/*.ml{,i}>: use_osc
 # Library osc_unix
 "unix/osc_unix.cmxs": use_osc_unix
 <unix/osc_unix.{cma,cmxa}>: oasis_library_osc_unix_byte
 <unix/*.ml{,i}>: oasis_library_osc_unix_byte
 <unix/osc_unix.{cma,cmxa}>: oasis_library_osc_unix_native
 <unix/*.ml{,i}>: oasis_library_osc_unix_native
-<unix/*.ml{,i}>: use_osc
 <unix/*.ml{,i}>: pkg_ocplib-endian
+<unix/*.ml{,i}>: use_osc
 # Executable test_lwt
-"test/test_lwt.byte": use_osc_lwt
-"test/test_lwt.byte": use_osc
-"test/test_lwt.byte": pkg_oUnit
 "test/test_lwt.byte": pkg_lwt
 "test/test_lwt.byte": pkg_lwt.unix
+"test/test_lwt.byte": pkg_oUnit
 "test/test_lwt.byte": pkg_ocplib-endian
-<test/*.ml{,i}>: use_osc_lwt
+"test/test_lwt.byte": use_osc
+"test/test_lwt.byte": use_osc_lwt
 <test/*.ml{,i}>: pkg_lwt
 <test/*.ml{,i}>: pkg_lwt.unix
+<test/*.ml{,i}>: use_osc_lwt
 # Executable test_string
-"test/test_string.byte": use_osc
 "test/test_string.byte": pkg_oUnit
-"test/test_string.byte": pkg_threads
 "test/test_string.byte": pkg_ocplib-endian
+"test/test_string.byte": pkg_threads
+"test/test_string.byte": use_osc
 # Executable test_unix
-"test/test_unix.byte": use_osc_unix
-"test/test_unix.byte": use_osc
 "test/test_unix.byte": pkg_oUnit
-"test/test_unix.byte": pkg_threads
 "test/test_unix.byte": pkg_ocplib-endian
-<test/*.ml{,i}>: use_osc_unix
-<test/*.ml{,i}>: use_osc
+"test/test_unix.byte": pkg_threads
+"test/test_unix.byte": use_osc
+"test/test_unix.byte": use_osc_unix
 <test/*.ml{,i}>: pkg_oUnit
-<test/*.ml{,i}>: pkg_threads
 <test/*.ml{,i}>: pkg_ocplib-endian
+<test/*.ml{,i}>: pkg_threads
+<test/*.ml{,i}>: use_osc
+<test/*.ml{,i}>: use_osc_unix
 # OASIS_STOP
 <lib>: include
