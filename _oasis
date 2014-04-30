@@ -53,7 +53,7 @@ Executable test_lwt
 
 Test test_lwt
   Command:             $(test_lwt)
-  Run$:                flag(lwt)
+  Run$:                flag(lwt) && flag(tests)
   WorkingDirectory:    test
 
 Executable test_string
@@ -76,7 +76,7 @@ Executable test_unix
 
 Test test_unix
   Command:             $(test_unix)
-  Run$:                flag(unix)
+  Run$:                flag(tests) && flag(unix)
   WorkingDirectory:    test
 
 Document api
