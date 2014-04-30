@@ -1,5 +1,5 @@
 # OPAM packages needed to build tests.
-OPAM_PACKAGES="ocplib-endian ounit lwt"
+OPAM_PACKAGES="ocplib-endian ounit"
 
 
 case "$OCAML_VERSION,$OPAM_VERSION" in
@@ -25,6 +25,10 @@ opam --git-version
 
 opam init 
 opam install ${OPAM_PACKAGES}
+if [ $INSTALL_LWT -eq 1 ]
+then
+    opam install lwt
+fi
 
 eval `opam config -env`
 make
