@@ -1,4 +1,4 @@
-open OUnit
+open OUnit2
 
 (* Serialise a packet to a string; read it back from the string; check that the
  * resulting packet equals the one we started with. *)
@@ -13,7 +13,7 @@ let suite =
   "string_suite" >::: (
     List.map
       (fun (name, packet) ->
-        name >:: (fun () -> test_message_encode_decode packet))
+        name >:: (fun _ -> test_message_encode_decode packet))
       Test_common.test_packets
   )
 
