@@ -1,9 +1,9 @@
 (** Generic OSC transport library, functorised over the
     {{:Osc_transport.TRANSPORT.html}TRANSPORT} module. *)
 
+(** Type of modules which can be used to create an OSC library, via the
+    {{:Osc_transport.Make.html}Osc_transport.Make} functor. *)
 module type TRANSPORT = sig
-  (** Type of modules which can be used to create an OSC library, via the
-      {{:Osc_transport.Make.html}Osc_transport.Make} functor. *)
 
   module Io : sig
     type 'a t
@@ -17,8 +17,8 @@ module type TRANSPORT = sig
   type sockaddr
   (** A generic socket type. *)
 
+  (** Types and functions for handling clients for this type of transport. *)
   module Client : sig
-    (** Types and functions for handling clients for this type of transport. *)
 
     type t
     (** A type encapsulating a client for this type of transport, and its
@@ -35,8 +35,8 @@ module type TRANSPORT = sig
         server listening on address [sockaddr]. *)
   end
 
+  (** Types and functions for handling servers for this type of transport. *)
   module Server : sig
-    (** Types and functions for handling servers for this type of transport. *)
 
     type t
     (** A type encapsulating a server for this type of transport, and its
@@ -56,11 +56,11 @@ module type TRANSPORT = sig
   end
 end
 
+(** Create OSC client/server modules from a module of type TRANSPORT. *)
 module Make : functor (T : TRANSPORT) -> sig
-  (** Create OSC client/server modules from a module of type TRANSPORT. *)
 
+  (** Types and functions for handling OSC clients. *)
   module Client : sig
-    (** Types and functions for handling OSC clients. *)
 
     type t
     (** An OSC client. *)
@@ -76,8 +76,8 @@ module Make : functor (T : TRANSPORT) -> sig
         a server listening at address [addr]. *)
   end
 
+  (** Types and functions for handling OSC servers. *)
   module Server : sig
-    (** Types and functions for handling OSC servers. *)
 
     type t
     (** An OSC server. *)
