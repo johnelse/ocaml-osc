@@ -42,3 +42,6 @@ clean:
 
 test: build
 	ocaml setup.ml -test
+
+test-interop-sclang: build
+	./test-interop-sclang.sh

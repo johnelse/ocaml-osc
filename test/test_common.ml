@@ -1,26 +1,26 @@
 open OUnit
 
 let test_empty_packet = Osc.(Message {
-  address = "/foo/bar";
+  address = "/test";
   arguments = [];
 })
 
 let test_empty_string_arg = Osc.(Message {
-  address = "/foo/bar";
+  address = "/test";
   arguments = [
     String "";
   ];
 })
 
 let test_empty_blob_arg = Osc.(Message {
-  address = "/foo/bar";
+  address = "/test";
   arguments = [
     Blob "";
   ];
 })
 
 let test_packet_with_args = Osc.(Message {
-  address = "/foo/bar";
+  address = "/test";
   arguments = [
     Blob "baz";
     String "quux";

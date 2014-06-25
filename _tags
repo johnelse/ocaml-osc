@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: 14c354fbb14d6cc6022c48c61d18c7f7)
+# DO NOT EDIT (digest: 64379219c954a3697f3cf3946ac7ae44)
 # Ignore VCS directories, you can use the same kind of rule outside
 # OASIS_START/STOP if you want to exclude directories that contains
 # useless stuff for the build process
@@ -59,9 +59,14 @@
 "test/test_unix.byte": pkg_threads
 "test/test_unix.byte": use_osc
 "test/test_unix.byte": use_osc_unix
+<test/*.ml{,i}>: pkg_threads
+# Executable test_interop_sclang
+"test/test_interop_sclang.byte": pkg_oUnit
+"test/test_interop_sclang.byte": pkg_ocplib-endian
+"test/test_interop_sclang.byte": use_osc
+"test/test_interop_sclang.byte": use_osc_unix
 <test/*.ml{,i}>: pkg_oUnit
 <test/*.ml{,i}>: pkg_ocplib-endian
-<test/*.ml{,i}>: pkg_threads
 <test/*.ml{,i}>: use_osc
 <test/*.ml{,i}>: use_osc_unix
 # OASIS_STOP

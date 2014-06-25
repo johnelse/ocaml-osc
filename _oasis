@@ -79,6 +79,13 @@ Test test_unix
   Run$:                flag(tests) && flag(unix)
   WorkingDirectory:    test
 
+Executable test_interop_sclang
+  Build$:              flag(tests) && flag(unix)
+  Path:                test
+  MainIs:              test_interop_sclang.ml
+  Install:             false
+  BuildDepends:        oUnit, osc, osc.unix
+
 Document api
   Title: Pure OCaml Open Source Control implementation
   Type: ocamlbuild (0.3)
