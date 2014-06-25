@@ -20,22 +20,22 @@ setup.ml: _oasis
 setup.data: setup.ml
 	ocaml setup.ml -configure $(LWT_FLAG) $(UNIX_FLAG) $(TESTS_FLAG)
 
-build: setup.data setup.ml
+build: setup.data
 	ocaml setup.ml -build -j $(J)
 
-doc: setup.data setup.ml
+doc: setup.data
 	ocaml setup.ml -doc -j $(J)
 
-install: setup.data setup.ml
+install: setup.data
 	ocaml setup.ml -install
 
 uninstall:
 	ocamlfind remove $(NAME)
 
-test: setup.ml build
+test: build
 	ocaml setup.ml -test
 
-reinstall: setup.ml
+reinstall: setup.data
 	ocamlfind remove $(NAME) || true
 	ocaml setup.ml -reinstall
 
