@@ -32,9 +32,6 @@ install: setup.data
 uninstall:
 	ocamlfind remove $(NAME)
 
-test: build
-	ocaml setup.ml -test
-
 reinstall: setup.data
 	ocamlfind remove $(NAME) || true
 	ocaml setup.ml -reinstall
@@ -42,3 +39,6 @@ reinstall: setup.data
 clean:
 	ocamlbuild -clean
 	rm -f setup.data setup.log
+
+test: build
+	ocaml setup.ml -test
