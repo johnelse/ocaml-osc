@@ -18,14 +18,19 @@ let test_udp_send_recv packet =
       Lwt_main.run
         (Lwt.async (fun () ->
           Server.recv server
-          >>= (fun (packet, _) -> Lwt_mvar.put mvar packet));
+          >>= Lwt_mvar.put mvar);
         Client.send client addr packet
         >>= (fun () -> Lwt_mvar.take mvar
-        >>= (fun received_packet ->
-          Test_common.assert_packets_equal
-            packet
-            received_packet;
-          return ()))))
+        >>= (function
+          | `Ok (received_packet, _) ->
+            Test_common.assert_packets_equal
+              packet
+              received_packet;
+            return ()
+          | `Error `Missing_typetag_string ->
+            Lwt.fail (Failure "Missing typetag string")
+          | `Error (`Unsupported_typetag tag) ->
+            Lwt.fail (Failure (Printf.sprintf "Unsupported typetag: %c" tag))))))
     (fun (client, server) ->
       Lwt_main.run
         (Client.destroy client

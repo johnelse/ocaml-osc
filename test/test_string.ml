@@ -4,10 +4,15 @@ open OUnit
  * resulting packet equals the one we started with. *)
 let test_message_encode_decode packet =
   let data = Osc_string.of_packet packet in
-  let received_packet = Osc_string.to_packet data in
-  Test_common.assert_packets_equal
-    packet
-    received_packet
+  match Osc_string.to_packet data with
+  | `Ok received_packet ->
+    Test_common.assert_packets_equal
+      packet
+      received_packet
+  | `Error `Missing_typetag_string ->
+    failwith "Missing typetag string"
+  | `Error (`Unsupported_typetag tag) ->
+    failwith (Printf.sprintf "Unsupported typetag: %c" tag)
 
 let suite =
   "string_suite" >::: (

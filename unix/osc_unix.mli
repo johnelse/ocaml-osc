@@ -16,6 +16,11 @@ module Udp : sig
 
     val destroy : t -> unit
 
-    val recv : t -> Osc.packet * Unix.sockaddr
+    val recv :
+      t ->
+      (Osc.packet * Unix.sockaddr, [
+        | `Missing_typetag_string
+        | `Unsupported_typetag of char
+      ]) Osc_result.t
   end
 end

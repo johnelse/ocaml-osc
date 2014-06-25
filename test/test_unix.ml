@@ -15,16 +15,21 @@ let test_udp_send_recv packet =
       client, server)
     (fun (client, server) ->
       let server_receive_thread channel =
-        let received_packet, _ = Server.recv server in
-        Event.sync (Event.send channel received_packet)
+        let result = Server.recv server in
+        Event.sync (Event.send channel result)
       in
       let channel = Event.new_channel () in
       let (_: Thread.t) = Thread.create server_receive_thread channel in
       Client.send client addr packet;
-      let received_packet = Event.sync (Event.receive channel) in
-      Test_common.assert_packets_equal
-        packet
-        received_packet)
+      match Event.sync (Event.receive channel) with
+      | `Ok (received_packet, _) ->
+        Test_common.assert_packets_equal
+          packet
+          received_packet
+      | `Error `Missing_typetag_string ->
+        failwith "Missing typetag string"
+      | `Error (`Unsupported_typetag tag) ->
+        failwith (Printf.sprintf "Unsupported typetag: %c" tag))
     (fun (client, server) ->
       Client.destroy client;
       Server.destroy server)

@@ -16,6 +16,11 @@ module Udp : sig
 
     val destroy : t -> unit Lwt.t
 
-    val recv : t -> (Osc.packet * Lwt_unix.sockaddr) Lwt.t
+    val recv :
+      t ->
+      ((Osc.packet * Lwt_unix.sockaddr, [
+        | `Missing_typetag_string
+        | `Unsupported_typetag of char
+      ]) Osc_result.t) Lwt.t
   end
 end

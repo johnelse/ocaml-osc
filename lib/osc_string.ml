@@ -1,3 +1,5 @@
+open Osc_result
+
 let (|>) x f = f x
 
 type input = {
@@ -5,9 +7,7 @@ type input = {
   mutable pos: int;
 }
 
-exception Missing_typetag_string
 exception Not_implemented
-exception Unsupported_typetag of char
 
 (* Strings are padding with 1-4 null characters to make the total
  * length a multiple of 4 bytes. *)
@@ -55,17 +55,17 @@ module Decode = struct
     result
 
   let argument input = function
-    | 'f' -> Osc.Float32 (float32 input)
-    | 'i' -> Osc.Int32 (int32 input)
-    | 's' -> Osc.String (string input)
-    | 'b' -> Osc.Blob (blob input)
-    | typetag -> raise (Unsupported_typetag typetag)
+    | 'f' -> return (Osc.Float32 (float32 input))
+    | 'i' -> return (Osc.Int32 (int32 input))
+    | 's' -> return (Osc.String (string input))
+    | 'b' -> return (Osc.Blob (blob input))
+    | typetag -> fail (`Unsupported_typetag typetag)
 
   let arguments input =
     (* Decode the typetag string. *)
     let typetag_string = string input in
     if typetag_string.[0] <> ','
-    then raise Missing_typetag_string
+    then fail `Missing_typetag_string
     else begin
       let typetag_count = (String.length typetag_string) - 1 in
       (* Decode the arguments, moving along the typetag string to detect the
@@ -74,12 +74,12 @@ module Decode = struct
        * string. *)
       let rec decode typetag_position acc =
         if typetag_position > typetag_count
-        then acc
+        then return acc
         else
-          let arg = argument input typetag_string.[typetag_position] in
-          decode (typetag_position + 1) (arg :: acc)
+          argument input typetag_string.[typetag_position]
+          >>= (fun arg -> decode (typetag_position + 1) (arg :: acc))
       in
-      decode 1 [] |> List.rev
+      decode 1 [] >|= List.rev
     end
 
   let timetag input =
@@ -93,8 +93,8 @@ module Decode = struct
     match string input with
     | "#bundle" -> raise Not_implemented
     | address ->
-      let args = arguments input in
-      Osc.(Message {address = address; arguments = args})
+      arguments input >>=
+      (fun args -> return Osc.(Message {address = address; arguments = args}))
 end
 
 module Encode = struct

@@ -42,9 +42,15 @@ let ping_sclang config packet =
       Printf.printf "ocaml: sending packet to port %d\n%!" config.sc_port;
       Client.send client sc_addr sent_packet;
       Printf.printf "ocaml: packet sent\n%!";
-      let (received_packet, _) = Server.recv server in
+      let result = Server.recv server in
       Printf.printf "ocaml: packet received\n%!";
-      Test_common.assert_packets_equal sent_packet received_packet)
+      match result with
+      | `Ok (received_packet, _) ->
+        Test_common.assert_packets_equal sent_packet received_packet
+      | `Error `Missing_typetag_string ->
+        failwith "Missing typetag string"
+      | `Error (`Unsupported_typetag tag) ->
+        failwith (Printf.sprintf "Unsupported typetag: %c" tag))
     (fun (child_pid, client, server) ->
       Printf.printf "ocaml: killing sclang\n%!";
       Unix.kill child_pid Sys.sigterm;
