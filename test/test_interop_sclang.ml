@@ -64,6 +64,7 @@ let test_ping_sclang config =
       [
         List.nth Test_common.test_packets 0;
         List.nth Test_common.test_packets 1;
+        List.nth Test_common.test_packets 2;
       ]
   )
 

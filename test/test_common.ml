@@ -12,6 +12,15 @@ let test_empty_string_arg = Osc.(Message {
   ];
 })
 
+let test_packet_no_blob = Osc.(Message {
+  address = "/test";
+  arguments = [
+    String "foobar";
+    Int32 123l;
+    Float32 456.789;
+  ];
+})
+
 let test_empty_blob_arg = Osc.(Message {
   address = "/test";
   arguments = [
@@ -32,6 +41,7 @@ let test_packet_with_args = Osc.(Message {
 let test_packets = [
   "empty_packet", test_empty_packet;
   "empty_string_arg", test_empty_string_arg;
+  "packet_no_blob", test_packet_no_blob;
   "empty_blob_arg", test_empty_blob_arg;
   "packet_with_args", test_packet_with_args;
 ]
