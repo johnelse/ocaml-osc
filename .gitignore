@@ -5,4 +5,6 @@ _build
 setup.data
 setup.log
 
+test.data
+
 api.docdir

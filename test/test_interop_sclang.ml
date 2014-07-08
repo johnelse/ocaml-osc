@@ -17,13 +17,8 @@ let ping_sclang config packet =
    * the reply. *)
   let sent_packet =
     match packet with
-    | Message {address; arguments} ->
-      Message {
-        address;
-        arguments = (Int32 (Int32.of_int config.ml_port)) :: arguments
-      }
-    | Bundle _ ->
-      failwith "Bundles not implemented"
+    | Message _ -> packet
+    | Bundle _ -> failwith "Bundles not implemented"
   in
   bracket
     (fun () ->
@@ -78,6 +73,18 @@ let test_interop_sclang config =
       test_ping_sclang config;
     ]
 
+(* Store the port on which OCaml will listen on in a file. *)
+let write_ml_port ml_port =
+  let data_file_path = "test.data" in
+  let chan = open_out data_file_path in
+  begin
+    try output_binary_int chan ml_port;
+    with e ->
+      close_out chan;
+      raise e
+  end;
+  close_out chan
+
 let usage () =
   Printf.printf "Usage:\n%!";
   Printf.printf
@@ -90,6 +97,7 @@ let () =
     try
       let ml_port = int_of_string ml_port_string in
       let sc_port = int_of_string sc_port_string in
+      write_ml_port ml_port;
       print_endline "-------- SuperCollider interoperability tests --------";
       let config = {ml_port; sclang_path; sc_port; sc_script_path} in
       let results = run_test_tt (test_interop_sclang config) in

@@ -38,7 +38,7 @@ reinstall: setup.data
 
 clean:
 	ocamlbuild -clean
-	rm -f setup.data setup.log
+	rm -f setup.data setup.log test.data
 
 test: build
 	ocaml setup.ml -test
