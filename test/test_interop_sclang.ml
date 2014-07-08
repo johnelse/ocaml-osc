@@ -13,8 +13,6 @@ let ping_sclang config packet =
   let localhost = Unix.inet_addr_of_string "127.0.0.1" in
   let ml_addr = Unix.ADDR_INET (localhost, config.ml_port) in
   let sc_addr = Unix.ADDR_INET (localhost, config.sc_port) in
-  (* Add the OCaml port into the packet, so SuperCollider knows where to send
-   * the reply. *)
   let sent_packet =
     match packet with
     | Message _ -> packet
