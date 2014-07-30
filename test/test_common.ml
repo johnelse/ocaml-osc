@@ -1,18 +1,18 @@
 open OUnit
 
-let test_empty_packet = Osc.(Message {
+let message_no_args = Osc.(Message {
   address = "/test";
   arguments = [];
 })
 
-let test_empty_string_arg = Osc.(Message {
+let message_empty_string_arg = Osc.(Message {
   address = "/test";
   arguments = [
     String "";
   ];
 })
 
-let test_packet_no_blob = Osc.(Message {
+let message_all_args_except_blobs = Osc.(Message {
   address = "/test";
   arguments = [
     String "foobar";
@@ -21,14 +21,14 @@ let test_packet_no_blob = Osc.(Message {
   ];
 })
 
-let test_empty_blob_arg = Osc.(Message {
+let message_empty_blob_arg = Osc.(Message {
   address = "/test";
   arguments = [
     Blob "";
   ];
 })
 
-let test_packet_with_args = Osc.(Message {
+let message_all_args = Osc.(Message {
   address = "/test";
   arguments = [
     Blob "baz";
@@ -38,13 +38,18 @@ let test_packet_with_args = Osc.(Message {
   ];
 })
 
-let test_packets = [
-  "empty_packet", test_empty_packet;
-  "empty_string_arg", test_empty_string_arg;
-  "packet_no_blob", test_packet_no_blob;
-  "empty_blob_arg", test_empty_blob_arg;
-  "packet_with_args", test_packet_with_args;
+let test_packets_no_blobs = [
+  "message_no_args", message_no_args;
+  "message_empty_string_arg", message_empty_string_arg;
+  "message_all_args_except_blobs", message_all_args_except_blobs;
 ]
+
+let test_packets_with_blobs = [
+  "message_empty_blob_arg", message_empty_blob_arg;
+  "message_all_args", message_all_args;
+]
+
+let test_packets = test_packets_no_blobs @ test_packets_with_blobs
 
 let are_arguments_equal arg1 arg2 =
   let open Osc in

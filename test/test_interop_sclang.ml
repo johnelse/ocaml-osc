@@ -59,11 +59,7 @@ let test_ping_sclang config =
         name >:: (fun () -> ping_sclang config packet))
       (* TODO: supercollider's handling of blobs via OSC is a bit suspect,
        *       so drop the test packets containing blobs for now. *)
-      [
-        List.nth Test_common.test_packets 0;
-        List.nth Test_common.test_packets 1;
-        List.nth Test_common.test_packets 2;
-      ]
+      Test_common.test_packets_no_blobs
   )
 
 let test_interop_sclang config =
