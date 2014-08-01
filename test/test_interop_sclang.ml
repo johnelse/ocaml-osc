@@ -95,17 +95,7 @@ let () =
       write_ml_port ml_port;
       print_endline "-------- SuperCollider interoperability tests --------";
       let config = {ml_port; sclang_path; sc_port; sc_script_path} in
-      let results = run_test_tt (test_interop_sclang config) in
-      (* Exit 1 if there were any errors or failures. *)
-      let rec choose_exit_code results acc =
-        match results with
-        | [] -> acc
-        | (RFailure _) :: rest
-        | (RError _) :: rest -> 1
-        | _ :: rest -> choose_exit_code rest acc
-      in
-      let exit_code = choose_exit_code results 0 in
-      exit exit_code
+      run_test_tt (test_interop_sclang config) |> Test_common.check_results
     with (Failure "int_of_string") -> usage ()
   end
   | _ -> usage ()

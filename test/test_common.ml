@@ -95,3 +95,10 @@ let assert_packets_equal packet1 packet2 =
     assert_failure "Bundles not implemented"
   | _, _ ->
     assert_failure "Packet types differ"
+
+let check_results results =
+  if List.exists
+    OUnit.(function | RFailure _ | RError _ -> true | _ -> false)
+    results
+  then exit 1
+  else exit 0
