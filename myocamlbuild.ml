@@ -1,5 +1,5 @@
 (* OASIS_START *)
-(* DO NOT EDIT (digest: 2b57cb2026d08fda5641a39babdbceb5) *)
+(* DO NOT EDIT (digest: 2608e14fd8b673cb06d6c99553fd3b77) *)
 module OASISGettext = struct
 (* # 22 "src/oasis/OASISGettext.ml" *)
 
@@ -39,10 +39,10 @@ module OASISExpr = struct
   open OASISGettext
 
 
-  type test = string 
+  type test = string
 
 
-  type flag = string 
+  type flag = string
 
 
   type t =
@@ -52,10 +52,10 @@ module OASISExpr = struct
     | EOr of t * t
     | EFlag of flag
     | ETest of test * string
-    
 
 
-  type 'a choices = (t * 'a) list 
+
+  type 'a choices = (t * 'a) list
 
 
   let eval var_get t =
@@ -430,10 +430,10 @@ module MyOCamlbuildBase = struct
   module OC = Ocamlbuild_pack.Ocaml_compiler
 
 
-  type dir = string 
-  type file = string 
-  type name = string 
-  type tag = string 
+  type dir = string
+  type file = string
+  type name = string
+  type tag = string
 
 
 (* # 62 "src/plugins/ocamlbuild/MyOCamlbuildBase.ml" *)
@@ -448,7 +448,7 @@ module MyOCamlbuildBase = struct
          * directory.
          *)
         includes:  (dir * dir list) list;
-      } 
+      }
 
 
   let env_filename =
@@ -639,6 +639,101 @@ let package_default =
           (["oasis_library_osc_unix_byte"; "ocaml"; "compile"; "byte"],
             [(OASISExpr.EBool true, S [A "-bin-annot"])]);
           (["oasis_library_osc_unix_native"; "ocaml"; "compile"; "native"],
+            [(OASISExpr.EBool true, S [A "-bin-annot"])]);
+          (["oasis_executable_test_lwt_byte"; "ocaml"; "link"; "byte"],
+            [(OASISExpr.EBool true, S [A "-bin-annot"])]);
+          (["oasis_executable_test_lwt_native"; "ocaml"; "link"; "native"],
+            [(OASISExpr.EBool true, S [A "-bin-annot"])]);
+          (["oasis_executable_test_lwt_byte"; "ocaml"; "ocamldep"; "byte"],
+            [(OASISExpr.EBool true, S [A "-bin-annot"])]);
+          (["oasis_executable_test_lwt_native"; "ocaml"; "ocamldep"; "native"
+           ],
+            [(OASISExpr.EBool true, S [A "-bin-annot"])]);
+          (["oasis_executable_test_lwt_byte"; "ocaml"; "compile"; "byte"],
+            [(OASISExpr.EBool true, S [A "-bin-annot"])]);
+          (["oasis_executable_test_lwt_native"; "ocaml"; "compile"; "native"],
+            [(OASISExpr.EBool true, S [A "-bin-annot"])]);
+          (["oasis_executable_test_string_byte"; "ocaml"; "link"; "byte"],
+            [(OASISExpr.EBool true, S [A "-bin-annot"])]);
+          (["oasis_executable_test_string_native"; "ocaml"; "link"; "native"],
+            [(OASISExpr.EBool true, S [A "-bin-annot"])]);
+          (["oasis_executable_test_string_byte"; "ocaml"; "ocamldep"; "byte"],
+            [(OASISExpr.EBool true, S [A "-bin-annot"])]);
+          ([
+              "oasis_executable_test_string_native";
+              "ocaml";
+              "ocamldep";
+              "native"
+           ],
+            [(OASISExpr.EBool true, S [A "-bin-annot"])]);
+          (["oasis_executable_test_string_byte"; "ocaml"; "compile"; "byte"],
+            [(OASISExpr.EBool true, S [A "-bin-annot"])]);
+          ([
+              "oasis_executable_test_string_native";
+              "ocaml";
+              "compile";
+              "native"
+           ],
+            [(OASISExpr.EBool true, S [A "-bin-annot"])]);
+          (["oasis_executable_test_unix_byte"; "ocaml"; "link"; "byte"],
+            [(OASISExpr.EBool true, S [A "-bin-annot"])]);
+          (["oasis_executable_test_unix_native"; "ocaml"; "link"; "native"],
+            [(OASISExpr.EBool true, S [A "-bin-annot"])]);
+          (["oasis_executable_test_unix_byte"; "ocaml"; "ocamldep"; "byte"],
+            [(OASISExpr.EBool true, S [A "-bin-annot"])]);
+          ([
+              "oasis_executable_test_unix_native";
+              "ocaml";
+              "ocamldep";
+              "native"
+           ],
+            [(OASISExpr.EBool true, S [A "-bin-annot"])]);
+          (["oasis_executable_test_unix_byte"; "ocaml"; "compile"; "byte"],
+            [(OASISExpr.EBool true, S [A "-bin-annot"])]);
+          (["oasis_executable_test_unix_native"; "ocaml"; "compile"; "native"
+           ],
+            [(OASISExpr.EBool true, S [A "-bin-annot"])]);
+          ([
+              "oasis_executable_test_interop_sclang_byte";
+              "ocaml";
+              "link";
+              "byte"
+           ],
+            [(OASISExpr.EBool true, S [A "-bin-annot"])]);
+          ([
+              "oasis_executable_test_interop_sclang_native";
+              "ocaml";
+              "link";
+              "native"
+           ],
+            [(OASISExpr.EBool true, S [A "-bin-annot"])]);
+          ([
+              "oasis_executable_test_interop_sclang_byte";
+              "ocaml";
+              "ocamldep";
+              "byte"
+           ],
+            [(OASISExpr.EBool true, S [A "-bin-annot"])]);
+          ([
+              "oasis_executable_test_interop_sclang_native";
+              "ocaml";
+              "ocamldep";
+              "native"
+           ],
+            [(OASISExpr.EBool true, S [A "-bin-annot"])]);
+          ([
+              "oasis_executable_test_interop_sclang_byte";
+              "ocaml";
+              "compile";
+              "byte"
+           ],
+            [(OASISExpr.EBool true, S [A "-bin-annot"])]);
+          ([
+              "oasis_executable_test_interop_sclang_native";
+              "ocaml";
+              "compile";
+              "native"
+           ],
             [(OASISExpr.EBool true, S [A "-bin-annot"])])
        ];
      includes =
@@ -649,6 +744,6 @@ let package_default =
 
 let dispatch_default = MyOCamlbuildBase.dispatch_default package_default;;
 
-# 653 "myocamlbuild.ml"
+# 748 "myocamlbuild.ml"
 (* OASIS_STOP *)
 Ocamlbuild_plugin.dispatch dispatch_default;;

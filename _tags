@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: 64379219c954a3697f3cf3946ac7ae44)
+# DO NOT EDIT (digest: cde811351033b9287ee2c96c84907521)
 # Ignore VCS directories, you can use the same kind of rule outside
 # OASIS_START/STOP if you want to exclude directories that contains
 # useless stuff for the build process
@@ -39,6 +39,10 @@
 <unix/*.ml{,i}>: pkg_ocplib-endian
 <unix/*.ml{,i}>: use_osc
 # Executable test_lwt
+"test/test_lwt.byte": oasis_executable_test_lwt_byte
+<test/*.ml{,i}>: oasis_executable_test_lwt_byte
+"test/test_lwt.byte": oasis_executable_test_lwt_native
+<test/*.ml{,i}>: oasis_executable_test_lwt_native
 "test/test_lwt.byte": pkg_lwt
 "test/test_lwt.byte": pkg_lwt.unix
 "test/test_lwt.byte": pkg_oUnit
@@ -49,11 +53,19 @@
 <test/*.ml{,i}>: pkg_lwt.unix
 <test/*.ml{,i}>: use_osc_lwt
 # Executable test_string
+"test/test_string.byte": oasis_executable_test_string_byte
+<test/*.ml{,i}>: oasis_executable_test_string_byte
+"test/test_string.byte": oasis_executable_test_string_native
+<test/*.ml{,i}>: oasis_executable_test_string_native
 "test/test_string.byte": pkg_oUnit
 "test/test_string.byte": pkg_ocplib-endian
 "test/test_string.byte": pkg_threads
 "test/test_string.byte": use_osc
 # Executable test_unix
+"test/test_unix.byte": oasis_executable_test_unix_byte
+<test/*.ml{,i}>: oasis_executable_test_unix_byte
+"test/test_unix.byte": oasis_executable_test_unix_native
+<test/*.ml{,i}>: oasis_executable_test_unix_native
 "test/test_unix.byte": pkg_oUnit
 "test/test_unix.byte": pkg_ocplib-endian
 "test/test_unix.byte": pkg_threads
@@ -61,6 +73,10 @@
 "test/test_unix.byte": use_osc_unix
 <test/*.ml{,i}>: pkg_threads
 # Executable test_interop_sclang
+"test/test_interop_sclang.byte": oasis_executable_test_interop_sclang_byte
+<test/*.ml{,i}>: oasis_executable_test_interop_sclang_byte
+"test/test_interop_sclang.byte": oasis_executable_test_interop_sclang_native
+<test/*.ml{,i}>: oasis_executable_test_interop_sclang_native
 "test/test_interop_sclang.byte": pkg_oUnit
 "test/test_interop_sclang.byte": pkg_ocplib-endian
 "test/test_interop_sclang.byte": use_osc

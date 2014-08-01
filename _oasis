@@ -50,6 +50,8 @@ Executable test_lwt
   MainIs:              test_lwt.ml
   Install:             false
   BuildDepends:        oUnit, osc, osc.lwt
+  ByteOpt:             -bin-annot
+  NativeOpt:           -bin-annot
 
 Test test_lwt
   Command:             $(test_lwt)
@@ -62,6 +64,8 @@ Executable test_string
   MainIs:              test_string.ml
   Install:             false
   BuildDepends:        oUnit, osc, threads
+  ByteOpt:             -bin-annot
+  NativeOpt:           -bin-annot
 
 Test test_string
   Command:             $(test_string)
@@ -73,6 +77,8 @@ Executable test_unix
   MainIs:              test_unix.ml
   Install:             false
   BuildDepends:        oUnit, osc, osc.unix, threads
+  ByteOpt:             -bin-annot
+  NativeOpt:           -bin-annot
 
 Test test_unix
   Command:             $(test_unix)
@@ -85,6 +91,8 @@ Executable test_interop_sclang
   MainIs:              test_interop_sclang.ml
   Install:             false
   BuildDepends:        oUnit, osc, osc.unix
+  ByteOpt:             -bin-annot
+  NativeOpt:           -bin-annot
 
 Document api
   Title: Pure OCaml Open Source Control implementation
