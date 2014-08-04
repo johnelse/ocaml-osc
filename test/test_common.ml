@@ -102,3 +102,6 @@ let check_results results =
     results
   then exit 1
   else exit 0
+
+let run suite =
+  check_results (run_test_tt suite)

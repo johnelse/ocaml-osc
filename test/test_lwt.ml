@@ -48,4 +48,4 @@ let suite =
 
 let _ =
   print_endline "-------- Lwt tests --------";
-  run_test_tt_main suite |> Test_common.check_results
+  Test_common.run suite

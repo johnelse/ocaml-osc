@@ -95,7 +95,7 @@ let () =
       write_ml_port ml_port;
       print_endline "-------- SuperCollider interoperability tests --------";
       let config = {ml_port; sclang_path; sc_port; sc_script_path} in
-      run_test_tt (test_interop_sclang config) |> Test_common.check_results
+      Test_common.run (test_interop_sclang config)
     with (Failure "int_of_string") -> usage ()
   end
   | _ -> usage ()
