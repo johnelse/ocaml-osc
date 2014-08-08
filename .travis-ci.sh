@@ -31,7 +31,4 @@ then
 fi
 
 eval `opam config -env`
-make
-make test
-make test-interop-sclang
-make doc
+make doc test test-interop-sclang
