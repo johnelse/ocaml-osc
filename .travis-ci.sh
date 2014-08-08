@@ -1,7 +1,6 @@
 # OPAM packages needed to build tests.
 OPAM_PACKAGES="ocplib-endian ounit"
 
-
 case "$OCAML_VERSION,$OPAM_VERSION" in
 3.12.1,1.0.0) ppa=avsm/ocaml312+opam10 ;;
 3.12.1,1.1.0) ppa=avsm/ocaml312+opam11 ;;
@@ -24,7 +23,7 @@ echo OPAM versions
 opam --version
 opam --git-version
 
-opam init 
+opam init
 opam install ${OPAM_PACKAGES}
 if [ $INSTALL_LWT -eq 1 ]
 then
