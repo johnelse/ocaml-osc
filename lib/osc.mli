@@ -35,9 +35,18 @@ type timetag =
   (** A time at which an OSC method should be invoked. *)
 (** An OSC time tag. *)
 
-type packet =
+type bundle = {
+  timetag: timetag;
+  (** A timetag, representing the time at which any actions triggered by this
+      bundle should begin. *)
+  packets: packet list;
+  (** The list of packets contained within this bundle. *)
+}
+(** An OSC bundle. *)
+
+and packet =
   | Message of message
   (** A single OSC message. *)
-  | Bundle of (timetag * packet list)
+  | Bundle of bundle
   (** An OSC bundle, containing a timetag and zero or more child packets. *)
 (** An OSC packet. *)

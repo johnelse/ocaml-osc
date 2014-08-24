@@ -18,6 +18,11 @@ type timetag =
   | Immediate
   | Time of time
 
-type packet =
+type bundle = {
+  timetag: timetag;
+  packets: packet list;
+}
+
+and packet =
   | Message of message
-  | Bundle of (timetag * packet list)
+  | Bundle of bundle
