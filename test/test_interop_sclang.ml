@@ -68,7 +68,7 @@ let test_interop_sclang config =
       test_ping_sclang config;
     ]
 
-(* Store the port on which OCaml will listen on in a file. *)
+(* Store the port on which OCaml will listen in a file. *)
 let write_ml_port ml_port =
   let data_file_path = "test.data" in
   let chan = open_out data_file_path in
