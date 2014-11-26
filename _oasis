@@ -81,7 +81,7 @@ Executable test_interop_sclang
   BuildDepends:        oUnit, osc, osc.unix
 
 Document api
-  Title: Pure OCaml Open Source Control implementation
+  Title: Pure OCaml Open Sound Control implementation
   Type: ocamlbuild (0.3)
   BuildTools+: ocamldoc
   XOcamlbuildModules: Osc, Osc_string, Osc_transport
