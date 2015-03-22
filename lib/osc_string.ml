@@ -2,10 +2,14 @@ open Osc_result
 
 let (|>) x f = f x
 
-type input = {
-  data: string;
-  mutable pos: int;
-}
+module Input = struct
+  type t = {
+    data: string;
+    mutable pos: int;
+  }
+
+  let current_char input = input.data.[input.pos]
+end
 
 exception Not_implemented
 
@@ -24,6 +28,8 @@ let blob_padding_of_length length =
 let int32_chars = 4
 
 module Decode = struct
+  open Input
+
   let int32 input =
     let result = EndianString.BigEndian.get_int32 input.data input.pos in
     input.pos <- input.pos + int32_chars;
@@ -62,11 +68,11 @@ module Decode = struct
     | typetag -> fail (`Unsupported_typetag typetag)
 
   let arguments input =
-    (* Decode the typetag string. *)
-    let typetag_string = string input in
-    if typetag_string.[0] <> ','
+    if current_char input <> ','
     then fail `Missing_typetag_string
     else begin
+      (* Decode the typetag string. *)
+      let typetag_string = string input in
       let typetag_count = (String.length typetag_string) - 1 in
       (* Decode the arguments, moving along the typetag string to detect the
        * type we're trying to decode. Due to the ',' prefix in the typetag
@@ -176,5 +182,5 @@ let of_packet packet =
   Buffer.contents output
 
 let to_packet data =
-  let input = {data; pos = 0} in
+  let input = Input.({data; pos = 0}) in
   Decode.packet input
