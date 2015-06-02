@@ -6,6 +6,7 @@ build: [
 build-test: [
   [make "doc"]
   [make "test"]
+  [make "test-interop-sclang"]
 ]
 install: [
   [make "PREFIX=%{prefix}%" "install"]
