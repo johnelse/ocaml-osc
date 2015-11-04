@@ -1,13 +1,11 @@
 language: c
-install: wget https://raw.githubusercontent.com/ocaml/ocaml-travisci-skeleton/master/.travis-opam.sh
+install:
+  - wget https://raw.githubusercontent.com/ocaml/ocaml-travisci-skeleton/master/.travis-opam.sh
+  - wget https://raw.githubusercontent.com/simonjbeaumont/ocaml-travis-coveralls/master/travis-coveralls.sh
 before_script:
   - sudo apt-get update -qq
   - sudo apt-get install -y supercollider
-script: PACKAGE=osc bash -ex .travis-opam.sh
+script: PACKAGE=osc bash -ex .travis-opam.sh && bash -ex travis-coveralls.sh
 env:
-  - OCAML_VERSION=4.00
-  - OCAML_VERSION=4.00 DEPOPTS=lwt
-  - OCAML_VERSION=4.01
-  - OCAML_VERSION=4.01 DEPOPTS=lwt
   - OCAML_VERSION=4.02
   - OCAML_VERSION=4.02 DEPOPTS=lwt

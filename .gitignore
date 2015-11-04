@@ -8,3 +8,6 @@ setup.log
 test.data
 
 api.docdir
+
+travis-coveralls.sh
+.coverage/

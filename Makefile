@@ -42,3 +42,9 @@ test: build
 
 test-interop-sclang: build
 	./test-interop-sclang.sh
+
+travis-coveralls.sh:
+	wget https://raw.githubusercontent.com/simonjbeaumont/ocaml-travis-coveralls/master/$@
+
+coverage: travis-coveralls.sh
+	bash $<
