@@ -1,8 +1,8 @@
 # OASIS_START
-# DO NOT EDIT (digest: 07a0391859c7a31c92087277157b2727)
+# DO NOT EDIT (digest: 92b472ccfe6a37677ada8c9f5f0c090a)
 version = "0.1.0"
 description = "Open Sound Control library"
-requires = "ocplib-endian"
+requires = "bytes ocplib-endian"
 archive(byte) = "osc.cma"
 archive(byte, plugin) = "osc.cma"
 archive(native) = "osc.cmxa"

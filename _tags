@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: 1831af03506ce0fb4f2dca1f10d6f58a)
+# DO NOT EDIT (digest: 36bb769e0f4f455e844adbc1cd3129f2)
 # Ignore VCS directories, you can use the same kind of rule outside
 # OASIS_START/STOP if you want to exclude directories that contains
 # useless stuff for the build process
@@ -16,18 +16,22 @@ true: annot, bin_annot
 "_darcs": not_hygienic
 # Library osc
 "lib/osc.cmxs": use_osc
+<lib/*.ml{,i,y}>: pkg_bytes
 <lib/*.ml{,i,y}>: pkg_ocplib-endian
 # Library osc_lwt
 "lwt/osc_lwt.cmxs": use_osc_lwt
+<lwt/*.ml{,i,y}>: pkg_bytes
 <lwt/*.ml{,i,y}>: pkg_lwt
 <lwt/*.ml{,i,y}>: pkg_lwt.unix
 <lwt/*.ml{,i,y}>: pkg_ocplib-endian
 <lwt/*.ml{,i,y}>: use_osc
 # Library osc_unix
 "unix/osc_unix.cmxs": use_osc_unix
+<unix/*.ml{,i,y}>: pkg_bytes
 <unix/*.ml{,i,y}>: pkg_ocplib-endian
 <unix/*.ml{,i,y}>: use_osc
 # Executable test_lwt
+"test/test_lwt.byte": pkg_bytes
 "test/test_lwt.byte": pkg_lwt
 "test/test_lwt.byte": pkg_lwt.unix
 "test/test_lwt.byte": pkg_oUnit
@@ -38,11 +42,13 @@ true: annot, bin_annot
 <test/*.ml{,i,y}>: pkg_lwt.unix
 <test/*.ml{,i,y}>: use_osc_lwt
 # Executable test_string
+"test/test_string.byte": pkg_bytes
 "test/test_string.byte": pkg_oUnit
 "test/test_string.byte": pkg_ocplib-endian
 "test/test_string.byte": pkg_threads
 "test/test_string.byte": use_osc
 # Executable test_unix
+"test/test_unix.byte": pkg_bytes
 "test/test_unix.byte": pkg_oUnit
 "test/test_unix.byte": pkg_ocplib-endian
 "test/test_unix.byte": pkg_threads
@@ -50,10 +56,12 @@ true: annot, bin_annot
 "test/test_unix.byte": use_osc_unix
 <test/*.ml{,i,y}>: pkg_threads
 # Executable test_interop_sclang
+"test/test_interop_sclang.byte": pkg_bytes
 "test/test_interop_sclang.byte": pkg_oUnit
 "test/test_interop_sclang.byte": pkg_ocplib-endian
 "test/test_interop_sclang.byte": use_osc
 "test/test_interop_sclang.byte": use_osc_unix
+<test/*.ml{,i,y}>: pkg_bytes
 <test/*.ml{,i,y}>: pkg_oUnit
 <test/*.ml{,i,y}>: pkg_ocplib-endian
 <test/*.ml{,i,y}>: use_osc
