@@ -2,7 +2,7 @@ ocaml-osc
 =========
 
 [![Build status](https://travis-ci.org/johnelse/ocaml-osc.png?branch=master)](https://travis-ci.org/johnelse/ocaml-osc)
-[![Coverage Status](https://coveralls.io/repos/johnelse/ocaml-osc/badge.svg?branch=master)](https://coveralls.io/r/johnelse/ocaml-osc?branch=master)
+[![Coverage Status](https://coveralls.io/repos/johnelse/ocaml-osc/badge.svg?branch=master&service=github)](https://coveralls.io/github/johnelse/ocaml-osc?branch=master)
 
 Pure OCaml implementation of the
 [Open Sound Control](http://opensoundcontrol.org/) protocol.
