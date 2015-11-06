@@ -49,6 +49,6 @@ let suite =
       udp_send_recv;
     ]
 
-let _ =
+let () =
   print_endline "-------- Unix tests --------";
   Test_common.run suite

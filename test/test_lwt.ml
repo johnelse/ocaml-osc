@@ -51,6 +51,6 @@ let suite =
       udp_send_recv;
     ]
 
-let _ =
+let () =
   print_endline "-------- Lwt tests --------";
   Test_common.run suite

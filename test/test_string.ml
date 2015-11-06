@@ -65,6 +65,6 @@ let base_suite =
       test_message_decode_suite;
     ]
 
-let _ =
+let () =
   print_endline "-------- String tests --------";
   Test_common.run base_suite
