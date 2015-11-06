@@ -39,12 +39,12 @@ module Decode = struct
   let string input =
     (* Look for the first null char after the position marker - this is the
      * start of the string's padding. *)
-    let end_pos = String.index_from input.data input.pos '\000' in
+    let end_pos = Bytes.index_from input.data input.pos '\000' in
     let string_length = end_pos - input.pos in
     let padding_length = string_padding_of_length string_length in
     (* Read the string, then move the position marker past the string and its
      * padding. *)
-    let result = String.sub input.data input.pos string_length in
+    let result = Bytes.sub input.data input.pos string_length in
     input.pos <- input.pos + string_length + padding_length;
     result
 
@@ -54,7 +54,7 @@ module Decode = struct
     let padding_length = blob_padding_of_length blob_length in
     (* Read the blob, then move the position marker past the blob and its
      * padding. *)
-    let result = String.sub input.data input.pos blob_length in
+    let result = Bytes.sub input.data input.pos blob_length in
     input.pos <- input.pos + blob_length + padding_length;
     result
 
@@ -71,7 +71,7 @@ module Decode = struct
     else begin
       (* Decode the typetag string. *)
       let typetag_string = string input in
-      let typetag_count = (String.length typetag_string) - 1 in
+      let typetag_count = (Bytes.length typetag_string) - 1 in
       (* Decode the arguments, moving along the typetag string to detect the
        * type we're trying to decode. Due to the ',' prefix in the typetag
        * string, the first typetag is the second character in the typetag
@@ -103,7 +103,7 @@ end
 
 module Encode = struct
   let int32 output i =
-    let tmp = String.create int32_chars in
+    let tmp = Bytes.create int32_chars in
     EndianString.BigEndian.set_int32 tmp 0 i;
     Buffer.add_string output tmp
 
@@ -112,20 +112,20 @@ module Encode = struct
 
   let string output s =
     Buffer.add_string output s;
-    let string_length = String.length s in
+    let string_length = Bytes.length s in
     let padding_length = string_padding_of_length string_length in
-    let padding = String.make padding_length '\000' in
+    let padding = Bytes.make padding_length '\000' in
     Buffer.add_string output padding
 
   let blob output b =
     (* Encode the blob length as an int32. *)
-    let blob_length = String.length b in
+    let blob_length = Bytes.length b in
     int32 output (Int32.of_int blob_length);
     (* Encode the blob itself, followed by a suitable amount of padding. *)
     Buffer.add_string output b;
     let padding_length = blob_padding_of_length blob_length in
     if padding_length > 0 then begin
-      let padding = String.make padding_length '\000' in
+      let padding = Bytes.make padding_length '\000' in
       Buffer.add_string output padding
     end
 
@@ -143,10 +143,11 @@ module Encode = struct
       | Osc.Blob _ -> 'b'
     in
     (* Encode the typetags as a string, prefixed with a comma. *)
-    let typetag_string = String.create ((List.length args) + 1) in
-    typetag_string.[0] <- ',';
+    let typetag_string = Bytes.create ((List.length args) + 1) in
+    Bytes.set typetag_string 0 ',';
     List.iteri
-      (fun index arg -> typetag_string.[index + 1] <- typetag_of_argument arg)
+      (fun index arg ->
+        Bytes.set typetag_string (index + 1) (typetag_of_argument arg))
       args;
     string output typetag_string;
     (* Encode the values of the arguments. *)

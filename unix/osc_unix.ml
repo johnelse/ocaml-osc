@@ -29,7 +29,7 @@ module UdpTransport = struct
       Unix.close client.socket
 
     let send_string client addr data =
-      let length = String.length data in
+      let length = Bytes.length data in
       let sent = Unix.sendto client.socket data 0 length [] addr in
       if sent <> length
       then failwith "IO error"
@@ -43,7 +43,7 @@ module UdpTransport = struct
     }
 
     let create addr buffer_length =
-      let buffer = String.create buffer_length in
+      let buffer = Bytes.create buffer_length in
       let socket = Unix.socket
         Unix.PF_INET
         Unix.SOCK_DGRAM
@@ -58,7 +58,7 @@ module UdpTransport = struct
     let recv_string server =
       match Unix.recvfrom server.socket server.buffer 0 server.buffer_length []
       with
-      | length, sockaddr -> String.sub server.buffer 0 length, sockaddr
+      | length, sockaddr -> Bytes.sub server.buffer 0 length, sockaddr
   end
 end
 

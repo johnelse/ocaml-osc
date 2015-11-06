@@ -30,7 +30,7 @@ module UdpTransport = struct
       Lwt_unix.close client.socket
 
     let send_string client addr data =
-      let length = String.length data in
+      let length = Bytes.length data in
       Lwt_unix.sendto client.socket data 0 length [] addr
       >>= (fun sent ->
         if sent <> length
@@ -46,7 +46,7 @@ module UdpTransport = struct
     }
 
     let create addr buffer_length =
-      let buffer = String.create buffer_length in
+      let buffer = Bytes.create buffer_length in
       Lwt_unix.getprotobyname "udp"
       >>= (fun proto ->
         let socket = Lwt_unix.socket
@@ -63,7 +63,7 @@ module UdpTransport = struct
     let recv_string server =
       Lwt_unix.recvfrom server.socket server.buffer 0 server.buffer_length []
       >>= (fun (length, sockaddr) ->
-        return (String.sub server.buffer 0 length, sockaddr))
+        return (Bytes.sub server.buffer 0 length, sockaddr))
   end
 end
 
