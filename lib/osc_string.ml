@@ -1,7 +1,5 @@
 open Osc_result
 
-let (|>) x f = f x
-
 module Input = struct
   type t = {
     data: string;
