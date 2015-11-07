@@ -14,5 +14,9 @@ install: [
 remove: [
   [make "PREFIX=%{prefix}%" "uninstall"]
 ]
-depends: ["ocplib-endian" "ounit"]
+depends: [
+  "oasis" {build}
+  "ocplib-endian"
+  "ounit"
+]
 depopts: ["lwt"]
