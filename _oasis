@@ -1,4 +1,4 @@
-OASISFormat:  0.3
+OASISFormat:           0.4
 Name:                  osc
 Version:               0.1.0
 Synopsis:              Open Sound Control library
@@ -6,7 +6,7 @@ License:               MIT
 Authors:               John Else
 Copyrights:            (C) 2014 John Else
 BuildTools:            ocamlbuild
-Plugins:               META (0.3)
+Plugins:               META (0.4), DevFiles (0.4)
 
 Flag lwt
   Description:         build the Lwt library
@@ -80,10 +80,14 @@ Executable test_interop_sclang
   Install:             false
   BuildDepends:        oUnit, osc, osc.unix
 
-Document api
+AlphaFeatures: ocamlbuild_more_args
+Document osc_api
+  Type: ocamlbuild (0.4)
+  BuildTools: ocamldoc
+
   Title: Pure OCaml Open Sound Control implementation
-  Type: ocamlbuild (0.3)
-  BuildTools+: ocamldoc
-  XOcamlbuildModules: Osc, Osc_string, Osc_transport
-  XOcamlBuildPath: doc
+  XOcamlBuildPath: .
+  XOCamlbuildExtraArgs:
+    "-docflags '-colorize-code -short-functors -charset utf-8'"
+  XOcamlbuildLibraries: osc
   Install: false

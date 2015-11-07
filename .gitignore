@@ -7,7 +7,7 @@ setup.log
 
 test.data
 
-api.docdir
+osc_api.docdir
 
 travis-coveralls.sh
 .coverage/
