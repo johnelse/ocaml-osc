@@ -1,4 +1,5 @@
 open OUnit
+open Rresult
 
 (* Start a UDP server listening on localhost; send a packet to localhost and
  * check that the server receives the same packet. *)
@@ -22,13 +23,13 @@ let test_udp_send_recv packet =
       let (_: Thread.t) = Thread.create server_receive_thread channel in
       Client.send client addr packet;
       match Event.sync (Event.receive channel) with
-      | `Ok (received_packet, _) ->
+      | Ok (received_packet, _) ->
         Test_common.assert_packets_equal
           packet
           received_packet
-      | `Error `Missing_typetag_string ->
+      | Error `Missing_typetag_string ->
         failwith "Missing typetag string"
-      | `Error (`Unsupported_typetag tag) ->
+      | Error (`Unsupported_typetag tag) ->
         failwith (Printf.sprintf "Unsupported typetag: %c" tag))
     (fun (client, server) ->
       Client.destroy client;

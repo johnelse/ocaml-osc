@@ -18,9 +18,9 @@ Flag unix
 
 Library osc
   Path:                lib
-  BuildDepends:        bytes, ocplib-endian
+  BuildDepends:        bytes, ocplib-endian, rresult
   Findlibname:         osc
-  Modules:             Osc, Osc_result, Osc_string, Osc_transport
+  Modules:             Osc, Osc_string, Osc_transport
 
 Library osc_lwt
   Build$:              flag(lwt)

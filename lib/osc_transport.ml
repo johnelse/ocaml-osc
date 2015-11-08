@@ -1,3 +1,5 @@
+open Rresult
+
 module type TRANSPORT = sig
   module Io : sig
     type 'a t
@@ -47,8 +49,8 @@ module Make(T : TRANSPORT) = struct
 
     let recv server =
       T.Server.recv_string server
-      >|= (fun (data, addr) -> Osc_result.map
+      >|= (fun (data, addr) ->
         (Osc_string.to_packet data)
-        (fun packet -> (packet, addr)))
+        >>| (fun packet -> (packet, addr)))
   end
 end

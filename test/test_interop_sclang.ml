@@ -1,4 +1,5 @@
 open OUnit
+open Rresult
 
 type test_config = {
   ml_port: int;
@@ -45,11 +46,11 @@ let ping_sclang config packet =
       let result = Server.recv server in
       Printf.printf "ocaml: packet received\n%!";
       match result with
-      | `Ok (received_packet, _) ->
+      | Ok (received_packet, _) ->
         Test_common.assert_packets_equal sent_packet received_packet
-      | `Error `Missing_typetag_string ->
+      | Error `Missing_typetag_string ->
         failwith "Missing typetag string"
-      | `Error (`Unsupported_typetag tag) ->
+      | Error (`Unsupported_typetag tag) ->
         failwith (Printf.sprintf "Unsupported typetag: %c" tag))
     (fun (child_pid, client, server) ->
       Printf.printf "ocaml: killing sclang\n%!";

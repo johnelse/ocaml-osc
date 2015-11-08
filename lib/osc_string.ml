@@ -1,4 +1,4 @@
-open Osc_result
+open Rresult
 
 module Input = struct
   type t = {
@@ -59,15 +59,15 @@ module Decode = struct
     result
 
   let argument input = function
-    | 'f' -> return (Osc.Float32 (float32 input))
-    | 'i' -> return (Osc.Int32 (int32 input))
-    | 's' -> return (Osc.String (string input))
-    | 'b' -> return (Osc.Blob (blob input))
-    | typetag -> fail (`Unsupported_typetag typetag)
+    | 'f' -> Ok (Osc.Float32 (float32 input))
+    | 'i' -> Ok (Osc.Int32 (int32 input))
+    | 's' -> Ok (Osc.String (string input))
+    | 'b' -> Ok (Osc.Blob (blob input))
+    | typetag -> Error (`Unsupported_typetag typetag)
 
   let arguments input =
     if current_char input <> ','
-    then fail `Missing_typetag_string
+    then Error `Missing_typetag_string
     else begin
       (* Decode the typetag string. *)
       let typetag_string = string input in
@@ -78,12 +78,12 @@ module Decode = struct
        * string. *)
       let rec decode typetag_position acc =
         if typetag_position > typetag_count
-        then return acc
+        then (Ok acc)
         else
           argument input typetag_string.[typetag_position]
           >>= (fun arg -> decode (typetag_position + 1) (arg :: acc))
       in
-      decode 1 [] >|= List.rev
+      decode 1 [] >>| List.rev
     end
 
   let timetag input =
@@ -98,7 +98,7 @@ module Decode = struct
     | "#bundle" -> raise Not_implemented
     | address ->
       arguments input >>=
-      (fun args -> return Osc.(Message {address = address; arguments = args}))
+      (fun args -> Ok (Osc.(Message {address = address; arguments = args})))
 end
 
 module Encode = struct

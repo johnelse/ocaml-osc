@@ -21,6 +21,6 @@ module Udp : sig
       ((Osc.packet * Lwt_unix.sockaddr, [
         | `Missing_typetag_string
         | `Unsupported_typetag of char
-      ]) Osc_result.t) Lwt.t
+      ]) Rresult.result) Lwt.t
   end
 end

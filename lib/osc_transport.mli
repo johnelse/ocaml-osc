@@ -93,7 +93,7 @@ module Make : functor (T : TRANSPORT) -> sig
       ((Osc.packet * T.sockaddr, [
         | `Missing_typetag_string
         | `Unsupported_typetag of char
-      ]) Osc_result.t) T.Io.t
+      ]) Rresult.result) T.Io.t
     (** Retrieve a packet sent to the server, as well as the sending client's
         address. *)
   end

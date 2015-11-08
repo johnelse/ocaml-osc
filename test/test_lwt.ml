@@ -1,4 +1,5 @@
 open OUnit
+open Rresult
 
 let test_udp_send_recv packet =
   let open Lwt in
@@ -22,14 +23,14 @@ let test_udp_send_recv packet =
         Client.send client addr packet
         >>= (fun () -> Lwt_mvar.take mvar
         >>= (function
-          | `Ok (received_packet, _) ->
+          | Ok (received_packet, _) ->
             Test_common.assert_packets_equal
               packet
               received_packet;
             return ()
-          | `Error `Missing_typetag_string ->
+          | Error `Missing_typetag_string ->
             Lwt.fail (Failure "Missing typetag string")
-          | `Error (`Unsupported_typetag tag) ->
+          | Error (`Unsupported_typetag tag) ->
             Lwt.fail (Failure (Printf.sprintf "Unsupported typetag: %c" tag))))))
     (fun (client, server) ->
       Lwt_main.run
