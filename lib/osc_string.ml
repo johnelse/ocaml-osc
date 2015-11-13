@@ -4,6 +4,7 @@ module Input = struct
   type t = {
     data: string;
     mutable pos: int;
+    final: int;
   }
 
   let current_char input = input.data.[input.pos]
@@ -194,5 +195,5 @@ let of_packet packet =
   Buffer.contents output
 
 let to_packet data =
-  let input = Input.({data; pos = 0}) in
+  let input = Input.({data; pos = 0; final = Bytes.length data}) in
   Decode.decode_packet input
