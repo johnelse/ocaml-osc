@@ -3,8 +3,6 @@ module Io = struct
   let (>>=) x f = f x
   let (>|=) x f = f x
   let return x = x
-
-  let raise_exn = raise
 end
 
 module UdpTransport = struct

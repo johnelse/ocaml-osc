@@ -3,8 +3,6 @@ module Io = struct
   let (>>=) = Lwt.(>>=)
   let (>|=) = Lwt.(>|=)
   let return x = Lwt.return x
-
-  let raise_exn = Lwt.fail
 end
 
 module UdpTransport = struct

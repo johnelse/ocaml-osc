@@ -4,8 +4,6 @@ module type TRANSPORT = sig
     val (>>=) : 'a t -> ('a -> 'b t) -> 'b t
     val (>|=) : 'a t -> ('a -> 'b) -> 'b t
     val return : 'a -> 'a t
-
-    val raise_exn : exn -> 'a t
   end
 
   type sockaddr
