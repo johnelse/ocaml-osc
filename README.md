@@ -12,3 +12,4 @@ Dependencies:
 * [lwt](http://ocsigen.org/lwt/) (optional)
 * [ocplib-endian](https://github.com/OCamlPro/ocplib-endian)
 * [oUnit](http://ounit.forge.ocamlcore.org/)
+* [rresult](https://github.com/dbuenzli/rresult)
