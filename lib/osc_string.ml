@@ -94,9 +94,27 @@ module Decode = struct
     | 0l, 1l -> Osc.Immediate
     | _ -> Osc.(Time {seconds; fraction})
 
-  let decode_packet input =
+  let rec decode_bundle input =
+    let timetag = decode_timetag input in
+    let rec decode_packets input acc =
+      if input.pos >= input.final
+      then Ok (List.rev acc)
+      else begin
+        let packet_size = Int32.to_int (decode_int32 input) in
+        let sub_input = {input with final = input.pos + packet_size} in
+        decode_packet sub_input
+        >>= (fun packet ->
+          input.pos <- input.pos + packet_size;
+          decode_packets input (packet :: acc))
+      end
+    in
+    decode_packets input []
+    >>= (fun packets -> Ok Osc.({timetag; packets}))
+
+  and decode_packet input =
     match decode_string input with
-    | "#bundle" -> raise Not_implemented
+    | "#bundle" ->
+      decode_bundle input >>= (fun bundle -> Ok (Osc.Bundle bundle))
     | address ->
       decode_arguments input >>=
       (fun args -> Ok (Osc.(Message {address = address; arguments = args})))
