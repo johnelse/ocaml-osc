@@ -10,8 +10,6 @@ module Input = struct
   let current_char input = input.data.[input.pos]
 end
 
-exception Not_implemented
-
 (* Strings are padding with 1-4 null characters to make the total
  * length a multiple of 4 bytes. *)
 let string_padding_of_length length =
