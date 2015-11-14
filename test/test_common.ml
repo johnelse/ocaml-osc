@@ -38,6 +38,31 @@ let message_all_args = Osc.(Message {
   ];
 })
 
+let bundle_immediate_no_packets = Osc.(Bundle {
+  timetag = Immediate;
+  packets = [];
+})
+
+let bundle_no_packets = Osc.(Bundle {
+  timetag = Time {seconds = 147l; fraction = 258l};
+  packets = [];
+})
+
+let bundle_one_message = Osc.(Bundle {
+  timetag = Time {seconds = 12l; fraction = 48l};
+  packets = [message_all_args];
+})
+
+let bundle_two_messages = Osc.(Bundle {
+  timetag = Immediate;
+  packets = [message_all_args; message_empty_blob_arg];
+})
+
+let bundle_recursive = Osc.(Bundle {
+  timetag = Time {seconds = 678l; fraction = 345l};
+  packets = [message_all_args; bundle_two_messages];
+})
+
 let test_packets_no_blobs = [
   "message_no_args", message_no_args;
   "message_empty_string_arg", message_empty_string_arg;
@@ -49,7 +74,16 @@ let test_packets_with_blobs = [
   "message_all_args", message_all_args;
 ]
 
-let test_packets = test_packets_no_blobs @ test_packets_with_blobs
+let test_bundles = [
+  "bundle_immediate_no_packets", bundle_immediate_no_packets;
+  "bundle_no_packets", bundle_no_packets;
+  "bundle_one_message", bundle_one_message;
+  "bundle_two_messages", bundle_two_messages;
+  "bundle_recursive", bundle_recursive;
+]
+
+let test_packets =
+  test_packets_no_blobs @ test_packets_with_blobs @ test_bundles
 
 let are_arguments_equal arg1 arg2 =
   let open Osc in
@@ -86,13 +120,26 @@ let assert_messages_equal message1 message2 =
     message1.arguments
     message2.arguments
 
-let assert_packets_equal packet1 packet2 =
+let rec assert_bundles_equal bundle1 bundle2 =
+  let open Osc in
+  assert_equal
+    ~msg:"Incorrect timetag"
+    bundle1.timetag bundle2.timetag;
+  assert_equal
+    ~msg:"Wrong number of packets in bundle"
+    (List.length bundle1.packets)
+    (List.length bundle2.packets);
+  List.iter2
+    (fun packet1 packet2 -> assert_packets_equal packet1 packet2)
+    bundle1.packets bundle2.packets
+
+and assert_packets_equal packet1 packet2 =
   let open Osc in
   match packet1, packet2 with
   | Message message1, Message message2 ->
     assert_messages_equal message1 message2
-  | Bundle _, Bundle _ ->
-    assert_failure "Bundles not implemented"
+  | Bundle bundle1, Bundle bundle2 ->
+    assert_bundles_equal bundle1 bundle2
   | _, _ ->
     assert_failure "Packet types differ"
 
