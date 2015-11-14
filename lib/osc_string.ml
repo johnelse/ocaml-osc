@@ -168,8 +168,21 @@ module Encode = struct
       encode_int32 output seconds;
       encode_int32 output fraction
 
-  let encode_packet output = function
-    | Osc.Bundle _ -> raise Not_implemented
+  let rec encode_bundle output {Osc.timetag; packets} =
+    encode_timetag output timetag;
+    List.iter
+      (fun packet ->
+        let sub_output = Buffer.create 20 in
+        encode_packet sub_output packet;
+        let packet_length = Buffer.length sub_output in
+        encode_int32 output (Int32.of_int packet_length);
+        Buffer.add_buffer output sub_output)
+      packets
+
+  and encode_packet output = function
+    | Osc.Bundle bundle ->
+      encode_string output "#bundle";
+      encode_bundle output bundle
     | Osc.Message msg ->
       encode_string output msg.Osc.address;
       encode_arguments output msg.Osc.arguments
