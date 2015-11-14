@@ -28,15 +28,15 @@ let int32_chars = 4
 module Decode = struct
   open Input
 
-  let int32 input =
+  let decode_int32 input =
     let result = EndianString.BigEndian.get_int32 input.data input.pos in
     input.pos <- input.pos + int32_chars;
     result
 
-  let float32 input =
-    Int32.float_of_bits (int32 input)
+  let decode_float32 input =
+    Int32.float_of_bits (decode_int32 input)
 
-  let string input =
+  let decode_string input =
     (* Look for the first null char after the position marker - this is the
      * start of the string's padding. *)
     let end_pos = Bytes.index_from input.data input.pos '\000' in
@@ -48,9 +48,9 @@ module Decode = struct
     input.pos <- input.pos + string_length + padding_length;
     result
 
-  let blob input =
+  let decode_blob input =
     (* Decode the blob length. *)
-    let blob_length = Int32.to_int (int32 input) in
+    let blob_length = Int32.to_int (decode_int32 input) in
     let padding_length = blob_padding_of_length blob_length in
     (* Read the blob, then move the position marker past the blob and its
      * padding. *)
@@ -58,19 +58,19 @@ module Decode = struct
     input.pos <- input.pos + blob_length + padding_length;
     result
 
-  let argument input = function
-    | 'f' -> Ok (Osc.Float32 (float32 input))
-    | 'i' -> Ok (Osc.Int32 (int32 input))
-    | 's' -> Ok (Osc.String (string input))
-    | 'b' -> Ok (Osc.Blob (blob input))
+  let decode_argument input = function
+    | 'f' -> Ok (Osc.Float32 (decode_float32 input))
+    | 'i' -> Ok (Osc.Int32 (decode_int32 input))
+    | 's' -> Ok (Osc.String (decode_string input))
+    | 'b' -> Ok (Osc.Blob (decode_blob input))
     | typetag -> Error (`Unsupported_typetag typetag)
 
-  let arguments input =
+  let decode_arguments input =
     if current_char input <> ','
     then Error `Missing_typetag_string
     else begin
       (* Decode the typetag string. *)
-      let typetag_string = string input in
+      let typetag_string = decode_string input in
       let typetag_count = (Bytes.length typetag_string) - 1 in
       (* Decode the arguments, moving along the typetag string to detect the
        * type we're trying to decode. Due to the ',' prefix in the typetag
@@ -80,47 +80,47 @@ module Decode = struct
         if typetag_position > typetag_count
         then (Ok acc)
         else
-          argument input typetag_string.[typetag_position]
+          decode_argument input typetag_string.[typetag_position]
           >>= (fun arg -> decode (typetag_position + 1) (arg :: acc))
       in
       decode 1 [] >>| List.rev
     end
 
-  let timetag input =
-    let seconds = int32 input in
-    let fraction = int32 input in
+  let decode_timetag input =
+    let seconds = decode_int32 input in
+    let fraction = decode_int32 input in
     match seconds, fraction with
     | 0l, 1l -> Osc.Immediate
     | _ -> Osc.(Time {seconds; fraction})
 
-  let packet input =
-    match string input with
+  let decode_packet input =
+    match decode_string input with
     | "#bundle" -> raise Not_implemented
     | address ->
-      arguments input >>=
+      decode_arguments input >>=
       (fun args -> Ok (Osc.(Message {address = address; arguments = args})))
 end
 
 module Encode = struct
-  let int32 output i =
+  let encode_int32 output i =
     let tmp = Bytes.create int32_chars in
     EndianString.BigEndian.set_int32 tmp 0 i;
     Buffer.add_string output tmp
 
-  let float32 output f =
-    int32 output (Int32.bits_of_float f)
+  let encode_float32 output f =
+    encode_int32 output (Int32.bits_of_float f)
 
-  let string output s =
+  let encode_string output s =
     Buffer.add_string output s;
     let string_length = Bytes.length s in
     let padding_length = string_padding_of_length string_length in
     let padding = Bytes.make padding_length '\000' in
     Buffer.add_string output padding
 
-  let blob output b =
+  let encode_blob output b =
     (* Encode the blob length as an int32. *)
     let blob_length = Bytes.length b in
-    int32 output (Int32.of_int blob_length);
+    encode_int32 output (Int32.of_int blob_length);
     (* Encode the blob itself, followed by a suitable amount of padding. *)
     Buffer.add_string output b;
     let padding_length = blob_padding_of_length blob_length in
@@ -129,13 +129,13 @@ module Encode = struct
       Buffer.add_string output padding
     end
 
-  let argument output = function
-    | Osc.Float32 f -> float32 output f
-    | Osc.Int32 i -> int32 output i
-    | Osc.String s -> string output s
-    | Osc.Blob b -> blob output b
+  let encode_argument output = function
+    | Osc.Float32 f -> encode_float32 output f
+    | Osc.Int32 i -> encode_int32 output i
+    | Osc.String s -> encode_string output s
+    | Osc.Blob b -> encode_blob output b
 
-  let arguments output args =
+  let encode_arguments output args =
     let typetag_of_argument = function
       | Osc.Float32 _ -> 'f'
       | Osc.Int32 _ -> 'i'
@@ -149,37 +149,37 @@ module Encode = struct
       (fun index arg ->
         Bytes.set typetag_string (index + 1) (typetag_of_argument arg))
       args;
-    string output typetag_string;
+    encode_string output typetag_string;
     (* Encode the values of the arguments. *)
     let rec encode = function
       | [] -> ()
       | arg :: rest ->
-          argument output arg;
+          encode_argument output arg;
           encode rest
     in
     encode args
 
-  let timetag output =
+  let encode_timetag output =
     let open Osc in function
     | Immediate ->
-      int32 output 0l;
-      int32 output 1l;
+      encode_int32 output 0l;
+      encode_int32 output 1l;
     | Time {seconds; fraction} ->
-      int32 output seconds;
-      int32 output fraction
+      encode_int32 output seconds;
+      encode_int32 output fraction
 
-  let packet output = function
+  let encode_packet output = function
     | Osc.Bundle _ -> raise Not_implemented
     | Osc.Message msg ->
-      string output msg.Osc.address;
-      arguments output msg.Osc.arguments
+      encode_string output msg.Osc.address;
+      encode_arguments output msg.Osc.arguments
 end
 
 let of_packet packet =
   let output = Buffer.create 64 in
-  Encode.packet output packet;
+  Encode.encode_packet output packet;
   Buffer.contents output
 
 let to_packet data =
   let input = Input.({data; pos = 0}) in
-  Decode.packet input
+  Decode.decode_packet input
