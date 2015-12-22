@@ -17,10 +17,11 @@ Flag unix
   Default:             false
 
 Library osc
+  Pack:                true
   Path:                lib
   BuildDepends:        bytes, ocplib-endian, rresult
   Findlibname:         osc
-  Modules:             Osc, Osc_string, Osc_transport
+  Modules:             Types, Codec, Transport
 
 Library osc_lwt
   Build$:              flag(lwt)

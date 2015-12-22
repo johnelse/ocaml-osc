@@ -36,7 +36,7 @@ module Make(T : TRANSPORT) = struct
     let destroy = T.Client.destroy
 
     let send client sockaddr packet =
-      let data = Osc_string.of_packet packet in
+      let data = Codec.of_packet packet in
       T.Client.send_string client sockaddr data
   end
 
@@ -50,7 +50,7 @@ module Make(T : TRANSPORT) = struct
     let recv server =
       T.Server.recv_string server
       >|= (fun (data, addr) ->
-        (Osc_string.to_packet data)
+        (Codec.to_packet data)
         >>| (fun packet -> (packet, addr)))
   end
 end

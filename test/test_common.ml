@@ -1,18 +1,19 @@
+open Osc
 open OUnit
 
-let message_no_args = Osc.(Message {
+let message_no_args = Types.(Message {
   address = "/test";
   arguments = [];
 })
 
-let message_empty_string_arg = Osc.(Message {
+let message_empty_string_arg = Types.(Message {
   address = "/test";
   arguments = [
     String "";
   ];
 })
 
-let message_all_args_except_blobs = Osc.(Message {
+let message_all_args_except_blobs = Types.(Message {
   address = "/test";
   arguments = [
     String "foobar";
@@ -21,14 +22,14 @@ let message_all_args_except_blobs = Osc.(Message {
   ];
 })
 
-let message_empty_blob_arg = Osc.(Message {
+let message_empty_blob_arg = Types.(Message {
   address = "/test";
   arguments = [
     Blob "";
   ];
 })
 
-let message_all_args = Osc.(Message {
+let message_all_args = Types.(Message {
   address = "/test";
   arguments = [
     Blob "baz";
@@ -38,27 +39,27 @@ let message_all_args = Osc.(Message {
   ];
 })
 
-let bundle_immediate_no_packets = Osc.(Bundle {
+let bundle_immediate_no_packets = Types.(Bundle {
   timetag = Immediate;
   packets = [];
 })
 
-let bundle_no_packets = Osc.(Bundle {
+let bundle_no_packets = Types.(Bundle {
   timetag = Time {seconds = 147l; fraction = 258l};
   packets = [];
 })
 
-let bundle_one_message = Osc.(Bundle {
+let bundle_one_message = Types.(Bundle {
   timetag = Time {seconds = 12l; fraction = 48l};
   packets = [message_all_args];
 })
 
-let bundle_two_messages = Osc.(Bundle {
+let bundle_two_messages = Types.(Bundle {
   timetag = Immediate;
   packets = [message_all_args; message_empty_blob_arg];
 })
 
-let bundle_recursive = Osc.(Bundle {
+let bundle_recursive = Types.(Bundle {
   timetag = Time {seconds = 678l; fraction = 345l};
   packets = [message_all_args; bundle_two_messages];
 })
@@ -86,7 +87,7 @@ let test_packets =
   test_packets_no_blobs @ test_packets_with_blobs @ test_bundles
 
 let are_arguments_equal arg1 arg2 =
-  let open Osc in
+  let open Types in
   match arg1, arg2 with
   | Blob a, Blob b -> a = b
   | String a, String b -> a = b
@@ -97,13 +98,13 @@ let are_arguments_equal arg1 arg2 =
   | _, _ -> false
 
 let string_of_argument = function
-  | Osc.Blob s -> Printf.sprintf "Blob %s" s
-  | Osc.String s -> Printf.sprintf "String %s" s
-  | Osc.Int32 i -> Printf.sprintf "Int32 %ld" i
-  | Osc.Float32 f -> Printf.sprintf "Float32 %f" f
+  | Types.Blob s -> Printf.sprintf "Blob %s" s
+  | Types.String s -> Printf.sprintf "String %s" s
+  | Types.Int32 i -> Printf.sprintf "Int32 %ld" i
+  | Types.Float32 f -> Printf.sprintf "Float32 %f" f
 
 let assert_messages_equal message1 message2 =
-  let open Osc in
+  let open Osc.Types in
   assert_equal
     ~msg:"Incorrect address"
     message1.address message2.address;
@@ -121,7 +122,7 @@ let assert_messages_equal message1 message2 =
     message2.arguments
 
 let rec assert_bundles_equal bundle1 bundle2 =
-  let open Osc in
+  let open Osc.Types in
   assert_equal
     ~msg:"Incorrect timetag"
     bundle1.timetag bundle2.timetag;
@@ -134,7 +135,7 @@ let rec assert_bundles_equal bundle1 bundle2 =
     bundle1.packets bundle2.packets
 
 and assert_packets_equal packet1 packet2 =
-  let open Osc in
+  let open Osc.Types in
   match packet1, packet2 with
   | Message message1, Message message2 ->
     assert_messages_equal message1 message2

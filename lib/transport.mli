@@ -1,8 +1,8 @@
 (** Generic OSC transport library, functorised over the
-    {{:Osc_transport.TRANSPORT.html}TRANSPORT} module. *)
+    {{:Transport.TRANSPORT.html}TRANSPORT} module. *)
 
 (** Type of modules which can be used to create an OSC library, via the
-    {{:Osc_transport.Make.html}Osc_transport.Make} functor. *)
+    {{:Transport.Make.html}Transport.Make} functor. *)
 module type TRANSPORT = sig
 
   module Io : sig
@@ -69,7 +69,7 @@ module Make : functor (T : TRANSPORT) -> sig
     val destroy : t -> unit T.Io.t
     (** Destroy an OSC client. *)
 
-    val send : t -> T.sockaddr -> Osc.packet -> unit T.Io.t
+    val send : t -> T.sockaddr -> Types.packet -> unit T.Io.t
     (** [send client addr packet] uses [client] to send OSC packet [packet] to
         a server listening at address [addr]. *)
   end
@@ -90,7 +90,7 @@ module Make : functor (T : TRANSPORT) -> sig
 
     val recv :
       t ->
-      ((Osc.packet * T.sockaddr, [
+      ((Types.packet * T.sockaddr, [
         | `Missing_typetag_string
         | `Unsupported_typetag of char
       ]) Rresult.result) T.Io.t

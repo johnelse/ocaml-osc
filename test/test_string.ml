@@ -4,8 +4,8 @@ open Rresult
 (* Serialise a packet to a string; read it back from the string; check that the
  * resulting packet equals the one we started with. *)
 let test_message_encode_decode packet =
-  let data = Osc_string.of_packet packet in
-  match Osc_string.to_packet data with
+  let data = Osc.Codec.of_packet packet in
+  match Osc.Codec.to_packet data with
   | Ok received_packet ->
     Test_common.assert_packets_equal
       packet
@@ -24,7 +24,7 @@ let test_message_encode_decode_suite =
   )
 
 let test_data =
-  let open Osc in
+  let open Osc.Types in
   [
     (* A packet which we expect to decode successfully. *)
     "message_ok",
@@ -44,7 +44,7 @@ let test_data =
   ]
 
 let test_message_decode data expected_result =
-  match (Osc_string.to_packet data, expected_result) with
+  match (Osc.Codec.to_packet data, expected_result) with
   | Ok decoded_packet, Ok expected_packet ->
     Test_common.assert_packets_equal
       decoded_packet expected_packet

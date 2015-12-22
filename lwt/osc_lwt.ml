@@ -65,4 +65,4 @@ module UdpTransport = struct
   end
 end
 
-module Udp = Osc_transport.Make(UdpTransport)
+module Udp = Osc.Transport.Make(UdpTransport)
