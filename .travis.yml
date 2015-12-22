@@ -1,3 +1,4 @@
+dist: trusty
 language: c
 install:
   - wget https://raw.githubusercontent.com/ocaml/ocaml-travisci-skeleton/master/.travis-opam.sh
