@@ -3,7 +3,7 @@ authors: "John Else"
 homepage: "https://github.com/johnelse/ocaml-osc"
 bug-reports: "https://github.com/johnelse/ocaml-osc/issues"
 dev-repo: "git://github.com/johnelse/ocaml-osc"
-maintainer: "john.else@citrix.com"
+maintainer: "john.else@gmail.com"
 build: [
   [make]
 ]
