@@ -41,7 +41,7 @@ test: build
 	ocaml setup.ml -test
 
 test-interop-sclang: build
-	./test-interop-sclang.sh
+	test/test-interop-sclang.sh
 
 travis-coveralls.sh:
 	wget https://raw.githubusercontent.com/simonjbeaumont/ocaml-travis-coveralls/master/$@
