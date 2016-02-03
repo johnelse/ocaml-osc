@@ -6,7 +6,10 @@ install:
 before_script:
   - sudo apt-get update -qq
   - sudo apt-get install -y supercollider
-script: bash -ex .travis-opam.sh && if [ -n "$DOCS" ]; then bash -ex .travis-docgen.sh; fi && if dpkg --compare-versions $OCAML_VERSION ge 4.02; then bash -ex travis-coveralls.sh; fi
+script:
+  - bash -ex .travis-opam.sh
+  - if [ -n "$DOCS" ]; then bash -ex .travis-docgen.sh; fi
+  - if dpkg --compare-versions $OCAML_VERSION ge 4.02; then bash -ex travis-coveralls.sh; fi
 env:
   global:
     - PACKAGE=osc
