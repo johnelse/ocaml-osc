@@ -1,0 +1,110 @@
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<link rel="Start" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Index of module types" rel=Appendix href="index_module_types.html">
+<link title="Types" rel="Chapter" href="Types.html">
+<link title="Codec" rel="Chapter" href="Codec.html">
+<link title="Transport" rel="Chapter" href="Transport.html"><title>Index of values</title>
+</head>
+<body>
+<div class="navbar">&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;</div>
+<h1>Index of values</h1>
+<table>
+<tr><td align="left"><br></td></tr>
+<tr><td><a href="Transport.TRANSPORT.Io.html#VAL(>>=)">(&gt;&gt;=)</a> [<a href="Transport.TRANSPORT.Io.html">Transport.TRANSPORT.Io</a>]</td>
+<td></td></tr>
+<tr><td><a href="Transport.TRANSPORT.Io.html#VAL(>|=)">(&gt;|=)</a> [<a href="Transport.TRANSPORT.Io.html">Transport.TRANSPORT.Io</a>]</td>
+<td></td></tr>
+<tr><td align="left"><br>C</td></tr>
+<tr><td><a href="Transport.TRANSPORT.Server.html#VALcreate">create</a> [<a href="Transport.TRANSPORT.Server.html">Transport.TRANSPORT.Server</a>]</td>
+<td><div class="info">
+<code class="code">create addr buffer_length</code> creates a new server listening on
+        <code class="code">sockaddr</code>.
+</div>
+</td></tr>
+<tr><td><a href="Transport.TRANSPORT.Client.html#VALcreate">create</a> [<a href="Transport.TRANSPORT.Client.html">Transport.TRANSPORT.Client</a>]</td>
+<td><div class="info">
+Create a new transport client.
+</div>
+</td></tr>
+<tr><td><a href="Transport.Make.Server.html#VALcreate">create</a> [<a href="Transport.Make.Server.html">Transport.Make.Server</a>]</td>
+<td><div class="info">
+<code class="code">create addr buffer_length</code> creates a new server listening on
+        <code class="code">sockaddr</code>.
+</div>
+</td></tr>
+<tr><td><a href="Transport.Make.Client.html#VALcreate">create</a> [<a href="Transport.Make.Client.html">Transport.Make.Client</a>]</td>
+<td><div class="info">
+Create a new OSC client.
+</div>
+</td></tr>
+<tr><td align="left"><br>D</td></tr>
+<tr><td><a href="Transport.TRANSPORT.Server.html#VALdestroy">destroy</a> [<a href="Transport.TRANSPORT.Server.html">Transport.TRANSPORT.Server</a>]</td>
+<td><div class="info">
+Destroy a transport server.
+</div>
+</td></tr>
+<tr><td><a href="Transport.TRANSPORT.Client.html#VALdestroy">destroy</a> [<a href="Transport.TRANSPORT.Client.html">Transport.TRANSPORT.Client</a>]</td>
+<td><div class="info">
+Destroy a transport client.
+</div>
+</td></tr>
+<tr><td><a href="Transport.Make.Server.html#VALdestroy">destroy</a> [<a href="Transport.Make.Server.html">Transport.Make.Server</a>]</td>
+<td><div class="info">
+Destroy an OSC server.
+</div>
+</td></tr>
+<tr><td><a href="Transport.Make.Client.html#VALdestroy">destroy</a> [<a href="Transport.Make.Client.html">Transport.Make.Client</a>]</td>
+<td><div class="info">
+Destroy an OSC client.
+</div>
+</td></tr>
+<tr><td align="left"><br>O</td></tr>
+<tr><td><a href="Codec.html#VALof_packet">of_packet</a> [<a href="Codec.html">Codec</a>]</td>
+<td><div class="info">
+Serialise an OSC packet into a string.
+</div>
+</td></tr>
+<tr><td align="left"><br>R</td></tr>
+<tr><td><a href="Transport.Make.Server.html#VALrecv">recv</a> [<a href="Transport.Make.Server.html">Transport.Make.Server</a>]</td>
+<td><div class="info">
+Retrieve a packet sent to the server, as well as the sending client's
+        address.
+</div>
+</td></tr>
+<tr><td><a href="Transport.TRANSPORT.Server.html#VALrecv_string">recv_string</a> [<a href="Transport.TRANSPORT.Server.html">Transport.TRANSPORT.Server</a>]</td>
+<td><div class="info">
+Retrieve data sent to the server, as well as the sending
+        client's address.
+</div>
+</td></tr>
+<tr><td><a href="Transport.TRANSPORT.Io.html#VALreturn">return</a> [<a href="Transport.TRANSPORT.Io.html">Transport.TRANSPORT.Io</a>]</td>
+<td></td></tr>
+<tr><td align="left"><br>S</td></tr>
+<tr><td><a href="Transport.Make.Client.html#VALsend">send</a> [<a href="Transport.Make.Client.html">Transport.Make.Client</a>]</td>
+<td><div class="info">
+<code class="code">send client addr packet</code> uses <code class="code">client</code> to send OSC packet <code class="code">packet</code> to
+        a server listening at address <code class="code">addr</code>.
+</div>
+</td></tr>
+<tr><td><a href="Transport.TRANSPORT.Client.html#VALsend_string">send_string</a> [<a href="Transport.TRANSPORT.Client.html">Transport.TRANSPORT.Client</a>]</td>
+<td><div class="info">
+<code class="code">send_string client addr data</code> uses <code class="code">client</code> to send <code class="code">data</code> to an OSC
+        server listening on address <code class="code">sockaddr</code>.
+</div>
+</td></tr>
+<tr><td align="left"><br>T</td></tr>
+<tr><td><a href="Codec.html#VALto_packet">to_packet</a> [<a href="Codec.html">Codec</a>]</td>
+<td><div class="info">
+Attempt to deserialise a string into an OSC packet.
+</div>
+</td></tr>
+</table>
+</body>
+</html>

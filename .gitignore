@@ -1,0 +1,13 @@
+*.byte
+*.swp
+
+_build
+setup.data
+setup.log
+
+test.data
+
+osc_api.docdir
+
+travis-coveralls.sh
+.coverage/

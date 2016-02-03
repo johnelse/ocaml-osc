@@ -1,0 +1,94 @@
+OASISFormat:           0.4
+Name:                  osc
+Version:               0.1.0
+Synopsis:              Open Sound Control library
+License:               MIT
+Authors:               John Else
+Copyrights:            (C) 2014 John Else
+BuildTools:            ocamlbuild
+Plugins:               META (0.4), DevFiles (0.4)
+
+Flag lwt
+  Description:         build the Lwt library
+  Default:             false
+
+Flag unix
+  Description:         build the Unix library
+  Default:             false
+
+Library osc
+  Pack:                true
+  Path:                lib
+  BuildDepends:        bytes, ocplib-endian, rresult
+  Findlibname:         osc
+  Modules:             Types, Codec, Transport
+
+Library osc_lwt
+  Build$:              flag(lwt)
+  Path:                lwt
+  BuildDepends:        lwt, lwt.unix, osc
+  Findlibname:         lwt
+  Findlibparent:       osc
+  Modules:             Osc_lwt
+
+Library osc_unix
+  Build$:              flag(unix)
+  Path:                unix
+  BuildDepends:        osc
+  Findlibname:         unix
+  Findlibparent:       osc
+  Modules:             Osc_unix
+
+Executable test_lwt
+  Build$:              flag(lwt) && flag(tests)
+  Path:                test
+  MainIs:              test_lwt.ml
+  Install:             false
+  BuildDepends:        oUnit, osc, osc.lwt
+
+Test test_lwt
+  Command:             $(test_lwt)
+  Run$:                flag(lwt) && flag(tests)
+  WorkingDirectory:    test
+
+Executable test_string
+  Build$:              flag(tests)
+  Path:                test
+  MainIs:              test_string.ml
+  Install:             false
+  BuildDepends:        oUnit, osc, threads
+
+Test test_string
+  Command:             $(test_string)
+  WorkingDirectory:    test
+
+Executable test_unix
+  Build$:              flag(tests) && flag(unix)
+  Path:                test
+  MainIs:              test_unix.ml
+  Install:             false
+  BuildDepends:        oUnit, osc, osc.unix, threads
+
+Test test_unix
+  Command:             $(test_unix)
+  Run$:                flag(tests) && flag(unix)
+  WorkingDirectory:    test
+
+Executable test_interop_sclang
+  Build$:              flag(tests) && flag(unix)
+  Path:                test
+  MainIs:              test_interop_sclang.ml
+  Install:             false
+  BuildDepends:        oUnit, osc, osc.unix
+
+AlphaFeatures: ocamlbuild_more_args
+Document osc_api
+  Type: ocamlbuild (0.4)
+  BuildTools: ocamldoc
+
+  Title: Pure OCaml Open Sound Control implementation
+  XOcamlBuildPath: .
+  XOCamlbuildExtraArgs:
+    "-docflags '-colorize-code -short-functors -charset utf-8'"
+  XOcamlbuildLibraries: osc
+  Install: false

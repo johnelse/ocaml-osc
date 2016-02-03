@@ -1,0 +1,10 @@
+PKG lwt ocplib-endian oUnit rresult threads
+S lib
+S lwt
+S test
+S unix
+
+B _build/lib
+B _build/lwt
+B _build/test
+B _build/unix
