@@ -1,16 +1,18 @@
 language: c
 install:
   - wget https://raw.githubusercontent.com/ocaml/ocaml-travisci-skeleton/master/.travis-opam.sh
+  - wget https://raw.githubusercontent.com/ocaml/ocaml-travisci-skeleton/master/.travis-docgen.sh
   - wget https://raw.githubusercontent.com/simonjbeaumont/ocaml-travis-coveralls/master/travis-coveralls.sh
 before_script:
   - sudo apt-get update -qq
   - sudo apt-get install -y supercollider
-script: bash -ex .travis-opam.sh && if dpkg --compare-versions $OCAML_VERSION ge 4.02; then bash -ex travis-coveralls.sh; fi
+script: bash -ex .travis-opam.sh && if [ -n "$DOCS" ]; then bash -ex .travis-docgen.sh; fi && if dpkg --compare-versions $OCAML_VERSION ge 4.02; then bash -ex travis-coveralls.sh; fi
 env:
   global:
     - PACKAGE=osc
+    - secure: ZZN6Lsym/o3tQFcQZLntcUr6YVH1X8S1NEfceGt/Fuk7x2LHiWoiOqDwLKNAvTeWR7sjrOpU03M8wcjA9AvzgEfrLC0H98mUDwXaOGOmYRl9Dxkvzz+Zwac70kA0jK4ecBNR2wuRblz/2fsezS4fjjNKax7BqDh1LzGjwp1areU=
   matrix:
     - OCAML_VERSION=4.01
     - OCAML_VERSION=4.01 DEPOPTS=lwt
     - OCAML_VERSION=4.02
-    - OCAML_VERSION=4.02 DEPOPTS=lwt
+    - OCAML_VERSION=4.02 DEPOPTS=lwt DOCS=true
