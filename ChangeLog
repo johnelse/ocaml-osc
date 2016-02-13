@@ -1,2 +1,7 @@
+0.1.1 (13-Feb-2016):
+ * Make osc.unix depend on unix
+ * Add usage examples
+ * travis-ci updates
+
 0.1.0 (12-Dec-2015):
  * first public release
