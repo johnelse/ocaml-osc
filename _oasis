@@ -34,7 +34,7 @@ Library osc_lwt
 Library osc_unix
   Build$:              flag(unix)
   Path:                unix
-  BuildDepends:        osc
+  BuildDepends:        osc, unix
   Findlibname:         unix
   Findlibparent:       osc
   Modules:             Osc_unix
