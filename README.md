@@ -7,6 +7,8 @@ ocaml-osc
 Pure OCaml implementation of the
 [Open Sound Control](http://opensoundcontrol.org/) protocol.
 
+API docs available [here](https://johnelse.github.io/ocaml-osc/).
+
 Dependencies:
 
 * [lwt](http://ocsigen.org/lwt/) (optional)
