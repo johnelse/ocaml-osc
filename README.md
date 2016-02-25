@@ -3,11 +3,10 @@ ocaml-osc
 
 [![Build status](https://travis-ci.org/johnelse/ocaml-osc.png?branch=master)](https://travis-ci.org/johnelse/ocaml-osc)
 [![Coverage Status](https://coveralls.io/repos/johnelse/ocaml-osc/badge.svg?branch=master&service=github)](https://coveralls.io/github/johnelse/ocaml-osc?branch=master)
+[![API reference](https://img.shields.io/badge/docs-API_reference-blue.svg)](https://johnelse.github.io/ocaml-osc)
 
 Pure OCaml implementation of the
 [Open Sound Control](http://opensoundcontrol.org/) protocol.
-
-API docs available [here](https://johnelse.github.io/ocaml-osc/).
 
 Dependencies:
 
