@@ -90,5 +90,5 @@ Document osc_api
   XOcamlBuildPath: .
   XOCamlbuildExtraArgs:
     "-docflags '-colorize-code -short-functors -charset utf-8'"
-  XOcamlbuildLibraries: osc
+  XOcamlbuildLibraries: osc, osc.lwt, osc.unix
   Install: false
