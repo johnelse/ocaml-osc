@@ -53,8 +53,17 @@ let ping_sclang config packet =
       | Error (`Unsupported_typetag tag) ->
         failwith (Printf.sprintf "Unsupported typetag: %c" tag))
     (fun (child_pid, client, server) ->
+      let exited child_pid =
+        Printf.printf "ocaml: waiting for child %d to exit\n%!" child_pid;
+        match Unix.waitpid [Unix.WNOHANG] child_pid with
+        | pid, _ when pid = child_pid -> true
+        | _ -> false
+      in
       Printf.printf "ocaml: killing sclang\n%!";
       Unix.kill child_pid Sys.sigterm;
+      while not (exited child_pid) do
+        Unix.sleep 1;
+      done;
       Client.destroy client;
       Server.destroy server)
     ()
