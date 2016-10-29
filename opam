@@ -5,10 +5,20 @@ bug-reports: "https://github.com/johnelse/ocaml-osc/issues"
 dev-repo: "git://github.com/johnelse/ocaml-osc"
 maintainer: "john.else@gmail.com"
 build: [
-  [make]
+  [
+    "./configure"
+    "--prefix" prefix
+    "--%{lwt:enable}%-lwt"
+    "--%{base-unix:enable}%-unix"
+    "--enable-docs"
+  ]
+  [make "build"]
 ]
 build-test: [
-  [make "doc"]
+  [
+    "./configure"
+    "--enable-tests"
+  ]
   [make "test"]
   [make "test-interop-sclang"]
 ]
@@ -16,7 +26,7 @@ install: [
   [make "PREFIX=%{prefix}%" "install"]
 ]
 remove: [
-  [make "PREFIX=%{prefix}%" "uninstall"]
+  ["ocamlfind" "remove" "osc"]
 ]
 depends: [
   "oasis" {build}

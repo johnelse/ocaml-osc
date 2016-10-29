@@ -1,44 +1,44 @@
-all: build
+# OASIS_START
+# DO NOT EDIT (digest: a3c674b4239234cbbe53afe090018954)
 
-ocamlfind_check=$(shell ocamlfind query $(1) > /dev/null 2> /dev/null && echo "true")
-
-LWT=$(call ocamlfind_check,lwt)
-ifeq ($(LWT), true)
-	LWT_FLAG=--enable-lwt
-endif
-
-UNIX_FLAG=--enable-unix
-
-TESTS_FLAG=--enable-tests
-
-NAME=osc
-J=4
-
-setup.data: setup.ml
-	ocaml setup.ml -configure $(LWT_FLAG) $(UNIX_FLAG) $(TESTS_FLAG)
+SETUP = ocaml setup.ml
 
 build: setup.data
-	ocaml setup.ml -build -j $(J)
+	$(SETUP) -build $(BUILDFLAGS)
 
-doc: setup.data
-	ocaml setup.ml -doc -j $(J)
+doc: setup.data build
+	$(SETUP) -doc $(DOCFLAGS)
+
+test: setup.data build
+	$(SETUP) -test $(TESTFLAGS)
+
+all:
+	$(SETUP) -all $(ALLFLAGS)
 
 install: setup.data
-	ocaml setup.ml -install
+	$(SETUP) -install $(INSTALLFLAGS)
 
-uninstall:
-	ocamlfind remove $(NAME)
+uninstall: setup.data
+	$(SETUP) -uninstall $(UNINSTALLFLAGS)
 
 reinstall: setup.data
-	ocamlfind remove $(NAME) || true
-	ocaml setup.ml -reinstall
+	$(SETUP) -reinstall $(REINSTALLFLAGS)
 
 clean:
-	ocamlbuild -clean
-	rm -f setup.data setup.log test.data
+	$(SETUP) -clean $(CLEANFLAGS)
 
-test: build
-	ocaml setup.ml -test
+distclean:
+	$(SETUP) -distclean $(DISTCLEANFLAGS)
+
+setup.data:
+	$(SETUP) -configure $(CONFIGUREFLAGS)
+
+configure:
+	$(SETUP) -configure $(CONFIGUREFLAGS)
+
+.PHONY: build doc test all install uninstall reinstall clean distclean configure
+
+# OASIS_STOP
 
 test-interop-sclang: build
 	test/test-interop-sclang.sh
