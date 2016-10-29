@@ -1,5 +1,5 @@
 open OUnit
-open Rresult
+open Result
 
 (* Start a UDP server listening on localhost; send a packet to localhost and
  * check that the server receives the same packet. *)

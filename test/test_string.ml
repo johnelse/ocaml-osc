@@ -1,5 +1,5 @@
 open OUnit
-open Rresult
+open Result
 
 (* Serialise a packet to a string; read it back from the string; check that the
  * resulting packet equals the one we started with. *)

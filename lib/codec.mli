@@ -8,5 +8,5 @@ val to_packet :
   (Types.packet, [
     | `Missing_typetag_string
     | `Unsupported_typetag of char
-  ]) Rresult.result
+  ]) Result.result
 (** Attempt to deserialise a string into an OSC packet. *)

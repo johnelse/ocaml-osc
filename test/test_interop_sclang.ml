@@ -1,5 +1,5 @@
 open OUnit
-open Rresult
+open Result
 
 type test_config = {
   ml_port: int;

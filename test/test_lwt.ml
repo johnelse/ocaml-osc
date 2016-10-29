@@ -1,5 +1,5 @@
 open OUnit
-open Rresult
+open Result
 
 let test_udp_send_recv packet =
   let open Lwt in
