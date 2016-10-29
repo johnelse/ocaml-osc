@@ -31,7 +31,7 @@ remove: [
 depends: [
   "oasis" {build}
   "ocplib-endian"
-  "ounit"
   "rresult"
+  "ounit" {test}
 ]
 depopts: ["lwt"]
