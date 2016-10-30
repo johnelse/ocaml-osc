@@ -41,7 +41,7 @@ An OSC server.<br>
 Destroy an OSC server.<br>
 </div>
 
-<pre><span id="VALrecv"><span class="keyword">val</span> recv</span> : <code class="type"><a href="Transport.Make.Server.html#TYPEt">t</a> -><br>       (<a href="Types.html#TYPEpacket">Types.packet</a> * T.sockaddr,<br>        [ `Missing_typetag_string | `Unsupported_typetag of char ])<br>       Rresult.result T.Io.t</code></pre><div class="info ">
+<pre><span id="VALrecv"><span class="keyword">val</span> recv</span> : <code class="type"><a href="Transport.Make.Server.html#TYPEt">t</a> -><br>       (<a href="Types.html#TYPEpacket">Types.packet</a> * T.sockaddr,<br>        [ `Missing_typetag_string | `Unsupported_typetag of char ])<br>       Result.result T.Io.t</code></pre><div class="info ">
 Retrieve a packet sent to the server, as well as the sending client's
         address.<br>
 </div>
