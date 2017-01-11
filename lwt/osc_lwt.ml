@@ -52,8 +52,8 @@ module UdpTransport = struct
           Lwt_unix.SOCK_DGRAM
           proto.Lwt_unix.p_proto
         in
-        Lwt_unix.bind socket addr;
-        return {buffer_length; buffer; socket})
+        Lwt_unix.Versioned.bind_2 socket addr
+        >>= (fun () -> return {buffer_length; buffer; socket}))
 
     let destroy server =
       Lwt_unix.close server.socket
