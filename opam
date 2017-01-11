@@ -38,3 +38,6 @@ depopts: [
   "base-unix"
   "lwt"
 ]
+conflicts: [
+  "lwt" {< "2.7.0"}
+]
