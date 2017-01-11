@@ -34,4 +34,7 @@ depends: [
   "rresult"
   "ounit" {test}
 ]
-depopts: ["lwt"]
+depopts: [
+  "base-unix"
+  "lwt"
+]
