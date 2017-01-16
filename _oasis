@@ -21,6 +21,7 @@ Library osc
   BuildDepends:        bytes, ocplib-endian, rresult
   Findlibname:         osc
   Modules:             Osc
+  InternalModules:     Codec, Transport, Types
 
 Library osc_lwt
   Build$:              flag(lwt)
