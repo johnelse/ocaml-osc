@@ -30,6 +30,8 @@ remove: [
 ]
 depends: [
   "oasis" {build}
+  "ocamlbuild" {build}
+  "ocamlfind" {build}
   "ocplib-endian"
   "rresult"
   "ounit" {test}
