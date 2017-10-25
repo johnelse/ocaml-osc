@@ -28,6 +28,8 @@ module Types : sig
     (** String argument. *)
     | Blob of string
     (** Binary blob argument. *)
+    | Timetag of timetag
+    (** Timetag argument. *)
   (** An argument contained by an OSC message. *)
 
   type message = {

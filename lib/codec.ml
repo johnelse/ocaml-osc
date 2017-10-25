@@ -69,6 +69,7 @@ module Decode = struct
     | 'i' -> Ok (Types.Int32 (decode_int32 input))
     | 's' -> Ok (Types.String (decode_string input))
     | 'b' -> Ok (Types.Blob (decode_blob input))
+    | 't' -> Ok (Types.Timetag (decode_timetag input))
     | typetag -> Error (`Unsupported_typetag typetag)
 
   let decode_arguments input =
@@ -160,6 +161,7 @@ module Encode = struct
     | Types.Int32 i -> encode_int32 output i
     | Types.String s -> encode_string output s
     | Types.Blob b -> encode_blob output b
+    | Types.Timetag t -> encode_timetag output t
 
   let encode_arguments output args =
     let typetag_of_argument = function
@@ -167,6 +169,7 @@ module Encode = struct
       | Types.Int32 _ -> 'i'
       | Types.String _ -> 's'
       | Types.Blob _ -> 'b'
+      | Types.Timetag _ -> 't'
     in
     (* Encode the typetags as a string, prefixed with a comma. *)
     let typetag_string = Bytes.create ((List.length args) + 1) in

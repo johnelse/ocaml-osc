@@ -102,6 +102,13 @@ let string_of_argument = function
   | Types.String s -> Printf.sprintf "String %s" s
   | Types.Int32 i -> Printf.sprintf "Int32 %ld" i
   | Types.Float32 f -> Printf.sprintf "Float32 %f" f
+  | Types.Timetag t ->
+    Printf.sprintf "Timetag %s"
+      (match t with
+      | Types.Immediate -> "Immediate"
+      | Types.Time time ->
+        Printf.sprintf "%ld.%ld"
+          time.Types.seconds time.Types.fraction)
 
 let assert_messages_equal message1 message2 =
   let open Osc.Types in

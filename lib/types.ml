@@ -12,6 +12,7 @@ type argument =
   | Int32 of int32
   | String of string
   | Blob of string
+  | Timetag of timetag
 
 type message = {
   address: string;
