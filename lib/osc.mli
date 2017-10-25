@@ -3,6 +3,22 @@
 module Types : sig
   (** Types representing OSC packets. *)
 
+  type time = {
+    seconds: int32;
+    (** Number of seconds since midnight on January 1st, 1900. *)
+    fraction: int32;
+    (** Fractional part of the timestamp. *)
+  }
+  (** An NTP-style timestamp. *)
+
+  type timetag =
+    | Immediate
+    (** A special time tag value, indicating that associated OSC methods should
+        be invoked immediately. *)
+    | Time of time
+    (** A time at which an OSC method should be invoked. *)
+  (** An OSC time tag. *)
+
   type argument =
     | Float32 of float
     (** 32-bit float argument. *)
@@ -21,22 +37,6 @@ module Types : sig
     (** The arguments associated with the message. *)
   }
   (** An OSC message. *)
-
-  type time = {
-    seconds: int32;
-    (** Number of seconds since midnight on January 1st, 1900. *)
-    fraction: int32;
-    (** Fractional part of the timestamp. *)
-  }
-  (** An NTP-style timestamp. *)
-
-  type timetag =
-    | Immediate
-    (** A special time tag value, indicating that associated OSC methods should
-        be invoked immediately. *)
-    | Time of time
-    (** A time at which an OSC method should be invoked. *)
-  (** An OSC time tag. *)
 
   type bundle = {
     timetag: timetag;

@@ -57,6 +57,13 @@ module Decode = struct
     input.pos <- input.pos + blob_length + padding_length;
     result
 
+  let decode_timetag input =
+    let seconds = decode_int32 input in
+    let fraction = decode_int32 input in
+    match seconds, fraction with
+    | 0l, 1l -> Types.Immediate
+    | _ -> Types.(Time {seconds; fraction})
+
   let decode_argument input = function
     | 'f' -> Ok (Types.Float32 (decode_float32 input))
     | 'i' -> Ok (Types.Int32 (decode_int32 input))
@@ -84,13 +91,6 @@ module Decode = struct
       in
       decode 1 [] >>| List.rev
     end
-
-  let decode_timetag input =
-    let seconds = decode_int32 input in
-    let fraction = decode_int32 input in
-    match seconds, fraction with
-    | 0l, 1l -> Types.Immediate
-    | _ -> Types.(Time {seconds; fraction})
 
   let rec decode_bundle input =
     let timetag = decode_timetag input in
@@ -146,6 +146,15 @@ module Encode = struct
       Buffer.add_string output padding
     end
 
+  let encode_timetag output =
+    let open Types in function
+    | Immediate ->
+      encode_int32 output 0l;
+      encode_int32 output 1l;
+    | Time {seconds; fraction} ->
+      encode_int32 output seconds;
+      encode_int32 output fraction
+
   let encode_argument output = function
     | Types.Float32 f -> encode_float32 output f
     | Types.Int32 i -> encode_int32 output i
@@ -175,15 +184,6 @@ module Encode = struct
           encode rest
     in
     encode args
-
-  let encode_timetag output =
-    let open Types in function
-    | Immediate ->
-      encode_int32 output 0l;
-      encode_int32 output 1l;
-    | Time {seconds; fraction} ->
-      encode_int32 output seconds;
-      encode_int32 output fraction
 
   let rec encode_bundle output {Types.timetag; packets} =
     encode_timetag output timetag;
