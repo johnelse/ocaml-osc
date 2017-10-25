@@ -16,7 +16,6 @@ env:
     - PACKAGE=osc
     - secure: ZZN6Lsym/o3tQFcQZLntcUr6YVH1X8S1NEfceGt/Fuk7x2LHiWoiOqDwLKNAvTeWR7sjrOpU03M8wcjA9AvzgEfrLC0H98mUDwXaOGOmYRl9Dxkvzz+Zwac70kA0jK4ecBNR2wuRblz/2fsezS4fjjNKax7BqDh1LzGjwp1areU=
   matrix:
-    - OCAML_VERSION=4.01
     - OCAML_VERSION=4.02
     - OCAML_VERSION=4.02 DEPOPTS=lwt DOCS=true KEEP=false
     - OCAML_VERSION=4.03
