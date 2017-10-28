@@ -112,6 +112,6 @@ let () =
       print_endline "-------- SuperCollider interoperability tests --------";
       let config = {ml_port; sclang_path; sc_port; sc_script_path} in
       Test_common.run (test_interop_sclang config)
-    with (Failure "int_of_string") -> usage ()
+    with Failure str when str = "int_of_string" -> usage ()
   end
   | _ -> usage ()
