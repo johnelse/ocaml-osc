@@ -43,7 +43,7 @@ let udp_send_recv =
     List.map
       (fun (name, packet) ->
         name >:: (fun () -> test_udp_send_recv packet))
-      Test_common.test_packets
+      Test_common.test_packets_internal
   )
 
 let suite =

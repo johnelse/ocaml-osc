@@ -20,7 +20,7 @@ let test_message_encode_decode_suite =
     List.map
       (fun (name, packet) ->
         name >:: (fun () -> test_message_encode_decode packet))
-      Test_common.test_packets
+      Test_common.test_packets_internal
   )
 
 let test_data =

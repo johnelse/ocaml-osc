@@ -13,7 +13,7 @@ let message_empty_string_arg = Types.(Message {
   ];
 })
 
-let message_all_args_except_blobs = Types.(Message {
+let message_all_args_basic = Types.(Message {
   address = "/test";
   arguments = [
     String "foobar";
@@ -64,13 +64,13 @@ let bundle_recursive = Types.(Bundle {
   packets = [message_all_args; bundle_two_messages];
 })
 
-let test_packets_no_blobs = [
+let test_packets_basic = [
   "message_no_args", message_no_args;
   "message_empty_string_arg", message_empty_string_arg;
-  "message_all_args_except_blobs", message_all_args_except_blobs;
+  "message_all_args_basic", message_all_args_basic;
 ]
 
-let test_packets_with_blobs = [
+let test_packets_extended = [
   "message_empty_blob_arg", message_empty_blob_arg;
   "message_all_args", message_all_args;
 ]
@@ -83,8 +83,10 @@ let test_bundles = [
   "bundle_recursive", bundle_recursive;
 ]
 
-let test_packets =
-  test_packets_no_blobs @ test_packets_with_blobs @ test_bundles
+let test_packets_sclang = test_packets_basic
+
+let test_packets_internal =
+  test_packets_basic @ test_packets_extended @ test_bundles
 
 let are_arguments_equal arg1 arg2 =
   let open Types in
