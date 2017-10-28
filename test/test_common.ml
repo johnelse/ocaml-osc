@@ -29,6 +29,20 @@ let message_empty_blob_arg = Types.(Message {
   ];
 })
 
+let message_timetag_immediate_arg = Types.(Message {
+  address = "/test";
+  arguments = [
+    Timetag Immediate;
+  ];
+})
+
+let message_timetag_time_arg = Types.(Message {
+  address = "/test";
+  arguments = [
+    Timetag (Time {seconds = 456l; fraction = 123l});
+  ];
+})
+
 let message_all_args = Types.(Message {
   address = "/test";
   arguments = [
@@ -36,6 +50,8 @@ let message_all_args = Types.(Message {
     String "quux";
     Int32 789l;
     Float32 123.456;
+    Timetag Immediate;
+    Timetag (Time {seconds = 456l; fraction = 123l});
   ];
 })
 
@@ -72,6 +88,8 @@ let test_packets_basic = [
 
 let test_packets_extended = [
   "message_empty_blob_arg", message_empty_blob_arg;
+  "message_timetag_immediate_arg", message_timetag_immediate_arg;
+  "message_timetag_time_arg", message_timetag_time_arg;
   "message_all_args", message_all_args;
 ]
 
@@ -97,6 +115,7 @@ let are_arguments_equal arg1 arg2 =
   | Float32 a, Float32 b ->
     let diff = abs_float (a -. b) in
     diff <= 0.01
+  | Timetag a, Timetag b -> a = b
   | _, _ -> false
 
 let string_of_argument = function
