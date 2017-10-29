@@ -1,3 +1,6 @@
+0.1.2 (29-Oct-2017):
+ * Add support for timetag arguments in messages
+
 0.1.1 (13-Feb-2016):
  * Make osc.unix depend on unix
  * Add usage examples
