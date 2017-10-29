@@ -38,12 +38,12 @@ module Decode = struct
   let decode_string input =
     (* Look for the first null char after the position marker - this is the
      * start of the string's padding. *)
-    let end_pos = Bytes.index_from input.data input.pos '\000' in
+    let end_pos = String.index_from input.data input.pos '\000' in
     let string_length = end_pos - input.pos in
     let padding_length = string_padding_of_length string_length in
     (* Read the string, then move the position marker past the string and its
      * padding. *)
-    let result = Bytes.sub input.data input.pos string_length in
+    let result = String.sub input.data input.pos string_length in
     input.pos <- input.pos + string_length + padding_length;
     result
 
@@ -53,7 +53,7 @@ module Decode = struct
     let padding_length = blob_padding_of_length blob_length in
     (* Read the blob, then move the position marker past the blob and its
      * padding. *)
-    let result = Bytes.sub input.data input.pos blob_length in
+    let result = String.sub input.data input.pos blob_length in
     input.pos <- input.pos + blob_length + padding_length;
     result
 
@@ -78,7 +78,7 @@ module Decode = struct
     else begin
       (* Decode the typetag string. *)
       let typetag_string = decode_string input in
-      let typetag_count = (Bytes.length typetag_string) - 1 in
+      let typetag_count = (String.length typetag_string) - 1 in
       (* Decode the arguments, moving along the typetag string to detect the
        * type we're trying to decode. Due to the ',' prefix in the typetag
        * string, the first typetag is the second character in the typetag
