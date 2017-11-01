@@ -123,27 +123,27 @@ module Encode = struct
   let encode_int32 output i =
     let tmp = Bytes.create int32_chars in
     EndianString.BigEndian.set_int32 tmp 0 i;
-    Buffer.add_string output tmp
+    Buffer.add_bytes output tmp
 
   let encode_float32 output f =
     encode_int32 output (Int32.bits_of_float f)
 
   let encode_string output s =
     Buffer.add_string output s;
-    let string_length = Bytes.length s in
+    let string_length = String.length s in
     let padding_length = string_padding_of_length string_length in
-    let padding = Bytes.make padding_length '\000' in
+    let padding = String.make padding_length '\000' in
     Buffer.add_string output padding
 
   let encode_blob output b =
     (* Encode the blob length as an int32. *)
-    let blob_length = Bytes.length b in
+    let blob_length = String.length b in
     encode_int32 output (Int32.of_int blob_length);
     (* Encode the blob itself, followed by a suitable amount of padding. *)
     Buffer.add_string output b;
     let padding_length = blob_padding_of_length blob_length in
     if padding_length > 0 then begin
-      let padding = Bytes.make padding_length '\000' in
+      let padding = String.make padding_length '\000' in
       Buffer.add_string output padding
     end
 
@@ -178,7 +178,7 @@ module Encode = struct
       (fun index arg ->
         Bytes.set typetag_string (index + 1) (typetag_of_argument arg))
       args;
-    encode_string output typetag_string;
+    encode_string output (Bytes.unsafe_to_string typetag_string);
     (* Encode the values of the arguments. *)
     let rec encode = function
       | [] -> ()
@@ -214,5 +214,5 @@ let of_packet packet =
   Buffer.contents output
 
 let to_packet data =
-  let input = Input.({data; pos = 0; final = Bytes.length data}) in
+  let input = Input.({data; pos = 0; final = String.length data}) in
   Decode.decode_packet input

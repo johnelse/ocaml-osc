@@ -28,8 +28,9 @@ module UdpTransport = struct
       Lwt_unix.close client.socket
 
     let send_string client addr data =
-      let length = Bytes.length data in
-      Lwt_unix.sendto client.socket data 0 length [] addr
+      let length = String.length data in
+      Lwt_unix.sendto client.socket
+        (Bytes.unsafe_of_string data) 0 length [] addr
       >>= (fun sent ->
         if sent <> length
         then Lwt.fail (Failure "IO error")
@@ -39,7 +40,7 @@ module UdpTransport = struct
   module Server = struct
     type t = {
       buffer_length: int;
-      buffer: string;
+      buffer: bytes;
       socket: Lwt_unix.file_descr;
     }
 
@@ -61,7 +62,8 @@ module UdpTransport = struct
     let recv_string server =
       Lwt_unix.recvfrom server.socket server.buffer 0 server.buffer_length []
       >>= (fun (length, sockaddr) ->
-        return (Bytes.sub server.buffer 0 length, sockaddr))
+        return
+          (Bytes.unsafe_to_string (Bytes.sub server.buffer 0 length), sockaddr))
   end
 end
 
