@@ -1,3 +1,6 @@
+0.1.4 (02-Nov-2017):
+ * Really make compatible with -safe-string
+
 0.1.3 (29-Oct-2017):
  * Make compatible with -safe-string
 
