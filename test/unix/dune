@@ -6,3 +6,15 @@
 (alias
   (name   runtest)
   (action (run ./test_unix.exe)))
+
+(executable
+  (name test_interop_sclang)
+  (modules Test_interop_sclang)
+  (libraries osc-unix test_common))
+
+(alias
+  (name   runtest)
+  (deps
+    (:x test_interop_sclang.exe)
+    (source_tree helpers))
+  (action (run ./helpers/test-interop-sclang.sh)))
