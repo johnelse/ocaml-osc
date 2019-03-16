@@ -6,7 +6,7 @@ open Result
 let test_udp_send_recv packet =
   let open Osc_unix.Udp in
   let localhost = Unix.inet_addr_of_string "127.0.0.1" in
-  let port = 4567 in
+  let port = 4568 in
   let addr = Unix.ADDR_INET (localhost, port) in
   let buffer_length = 1024 in
   bracket
