@@ -1,0 +1,5 @@
+(library
+  (name osc_unix)
+  (public_name osc-unix)
+  (wrapped false)
+  (libraries osc unix))

@@ -1,0 +1,5 @@
+(library
+  (name osc)
+  (public_name osc)
+  (wrapped false)
+  (libraries ocplib-endian rresult))

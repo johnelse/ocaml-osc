@@ -1,0 +1,8 @@
+(executable
+  (name test_lwt)
+  (modules Test_lwt)
+  (libraries osc-lwt test_common))
+
+(alias
+  (name   runtest)
+  (action (run ./test_lwt.exe)))

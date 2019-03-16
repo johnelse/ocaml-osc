@@ -1,0 +1,5 @@
+(library
+  (name osc_lwt)
+  (public_name osc-lwt)
+  (wrapped false)
+  (libraries lwt lwt.unix osc))

@@ -1,0 +1,25 @@
+opam-version: "2.0"
+maintainer: "john.else@gmail.com"
+authors: "John Else"
+homepage: "https://github.com/johnelse/ocaml-osc"
+bug-reports: "https://github.com/johnelse/ocaml-osc/issues"
+dev-repo: "git+https://github.com/johnelse/ocaml-osc"
+build: [
+  [ "dune" "build" "-p" name "-j" jobs ]
+  [ "dune" "runtest" "test/lwt"] {with-test}
+]
+
+depends: [
+  "dune" {build}
+  "lwt"
+  "osc"
+  "ounit" {with-test}
+]
+synopsis: "OpenSoundControl Lwt library"
+description: """
+OpenSoundControl client and server implementation, using Lwt-based IO
+"""
+url {
+  src:
+    "https://github.com/johnelse/ocaml-osc/archive/master.tar.gz"
+}

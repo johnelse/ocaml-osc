@@ -1,0 +1,8 @@
+(executable
+  (name test_unix)
+  (modules Test_unix)
+  (libraries osc-unix test_common threads))
+
+(alias
+  (name   runtest)
+  (action (run ./test_unix.exe)))
