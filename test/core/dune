@@ -1,8 +1,4 @@
-(executable
+(test
   (name test_string)
   (modules Test_string)
   (libraries osc test_common))
-
-(alias
-  (name   runtest)
-  (action (run ./test_string.exe)))
