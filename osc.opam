@@ -1,0 +1,26 @@
+opam-version: "2.0"
+authors: "John Else"
+homepage: "https://github.com/johnelse/ocaml-osc"
+bug-reports: "https://github.com/johnelse/ocaml-osc/issues"
+dev-repo: "git+https://github.com/johnelse/ocaml-osc.git"
+maintainer: "john.else@gmail.com"
+build: [
+  ["dune" "subst"] {pinned}
+  ["dune" "build" "-p" name "-j" jobs
+    "@install"
+    "@doc" {with-doc}
+    "@runtest" {with-test}]
+]
+depends: [
+  "ocaml" {>= "4.02.1"}
+  "dune" {>= "1.11"}
+  "ocplib-endian"
+  "rresult"
+  "base-unix"
+  "lwt"
+  "ounit" {with-test}
+]
+conflicts: [
+  "lwt" {< "2.7.0"}
+]
+synopsis: "Pure OCaml OpenSoundControl client and server implementation"

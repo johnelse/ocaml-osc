@@ -1,20 +1,25 @@
 #!/bin/sh
 
+set -eu
+
 ML_PORT=12345
 SC_PORT=57120
 
-SCLANG=`which sclang`
+( cd "$(dirname "$0")/../"
+  SCLANG=$(command -v sclang)
 
-if [ $? -eq 0 ]
-then
-    XVFB_RUN=`which xvfb-run`
+  if [ $? -eq 0 ]
+  then
+    tis=_build/default/test/test_interop_sclang.exe
+    XVFB_RUN=$(command -v xvfb-run)
     if [ $? -eq 0 ]
     then
-        $XVFB_RUN ./test_interop_sclang.byte $ML_PORT $SCLANG $SC_PORT test/EchoServer.sc
+        $XVFB_RUN $tis $ML_PORT "$SCLANG" $SC_PORT test/EchoServer.sc
     else
-        ./test_interop_sclang.byte $ML_PORT $SCLANG $SC_PORT test/EchoServer.sc
+        $tis $ML_PORT "$SCLANG" $SC_PORT test/EchoServer.sc
     fi
-else
+  else
     echo "couldn't find sclang"
     exit 1
-fi
+  fi
+)

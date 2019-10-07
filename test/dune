@@ -1,0 +1,24 @@
+(library
+  (name test_common)
+  (modules test_common)
+  (libraries osc oUnit))
+
+(test
+  (name test_lwt)
+  (modules test_lwt)
+  (libraries oUnit osc osc.lwt test_common))
+
+(test
+  (name test_string)
+  (modules test_string)
+  (libraries oUnit osc threads test_common))
+
+(test
+  (name test_unix)
+  (modules test_unix)
+  (libraries oUnit osc osc.unix threads test_common))
+
+(executable
+  (name test_interop_sclang)
+  (modules test_interop_sclang)
+  (libraries oUnit osc osc.unix test_common))
