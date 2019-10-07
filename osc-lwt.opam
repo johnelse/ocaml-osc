@@ -12,6 +12,7 @@ build: [
 depends: [
   "dune" {>= "1.6"}
   "lwt"
+  "ocaml" {>= "4.02.1"}
   "osc"
   "ounit" {with-test}
 ]
