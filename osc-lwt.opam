@@ -15,6 +15,9 @@ depends: [
   "osc"
   "ounit" {with-test}
 ]
+conflicts: [
+  "lwt" {< "2.7.0"}
+]
 synopsis: "OpenSoundControl Lwt library"
 description: """
 OpenSoundControl client and server implementation, using Lwt-based IO
