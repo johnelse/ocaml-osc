@@ -1,4 +1,4 @@
 (test
   (name test_lwt)
-  (modules Test_lwt)
+  (modules test_lwt)
   (libraries osc-lwt test_common))

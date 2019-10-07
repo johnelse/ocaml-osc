@@ -1,11 +1,11 @@
 (test
   (name test_unix)
-  (modules Test_unix)
+  (modules test_unix)
   (libraries osc-unix test_common threads))
 
 (executable
   (name test_interop_sclang)
-  (modules Test_interop_sclang)
+  (modules test_interop_sclang)
   (libraries osc-unix test_common))
 
 (alias

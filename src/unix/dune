@@ -2,4 +2,5 @@
   (name osc_unix)
   (public_name osc-unix)
   (wrapped false)
+  (modules osc_unix)
   (libraries osc unix))

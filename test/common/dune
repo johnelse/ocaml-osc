@@ -1,4 +1,5 @@
 (library
   (name test_common)
+  (modules test_common)
   (wrapped false)
   (libraries osc oUnit))

@@ -2,4 +2,6 @@
   (name osc)
   (public_name osc)
   (wrapped false)
+  (modules codec osc transport types)
+  (private_modules codec transport types)
   (libraries ocplib-endian rresult))
