@@ -12,7 +12,7 @@ build: [
 depends: [
   "base-unix"
   "dune" {>= "1.6"}
-  "ocaml" {>= "4.02.1"}
+  "ocaml" {>= "4.08"}
   "osc"
   "ounit" {with-test}
 ]

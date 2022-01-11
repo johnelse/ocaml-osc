@@ -12,10 +12,9 @@ build: [
 depends: [
   "base-bytes"
   "dune" {>= "1.6"}
-  "ocaml" {>= "4.02.1"}
+  "ocaml" {>= "4.08"}
   "ocplib-endian"
   "ounit" {with-test}
-  "rresult"
 ]
 synopsis: "OpenSoundControl core library"
 description: """

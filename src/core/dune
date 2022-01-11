@@ -4,4 +4,4 @@
   (wrapped false)
   (modules codec osc transport osc_types)
   (private_modules codec transport osc_types)
-  (libraries ocplib-endian rresult))
+  (libraries ocplib-endian))

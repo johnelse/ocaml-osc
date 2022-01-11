@@ -68,7 +68,7 @@ module Codec : sig
     (Osc_types.packet, [
       | `Missing_typetag_string
       | `Unsupported_typetag of char
-    ]) Result.result
+    ]) Result.t
   (** Attempt to deserialise a string into an OSC packet. *)
 end
 
@@ -168,7 +168,7 @@ module Transport : sig
         ((Osc_types.packet * T.sockaddr, [
           | `Missing_typetag_string
           | `Unsupported_typetag of char
-        ]) Result.result) T.Io.t
+        ]) Result.t) T.Io.t
       (** Retrieve a packet sent to the server, as well as the sending client's
           address. *)
     end

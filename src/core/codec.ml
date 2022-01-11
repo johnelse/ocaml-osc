@@ -1,4 +1,5 @@
-open Rresult
+let ( >>= ) = Result.bind
+let ( >>| ) r f = Result.map f r
 
 module Input = struct
   type t = {
