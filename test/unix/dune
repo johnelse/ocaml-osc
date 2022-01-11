@@ -8,8 +8,8 @@
   (modules test_interop_sclang)
   (libraries osc-unix test_common))
 
-(alias
-  (name   runtest)
+(rule
+  (alias runtest)
   (deps
     (:x test_interop_sclang.exe)
     (source_tree helpers))

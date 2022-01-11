@@ -1,19 +1,19 @@
 open Osc
 open OUnit
 
-let message_no_args = Types.(Message {
+let message_no_args = Osc_types.(Message {
   address = "/test";
   arguments = [];
 })
 
-let message_empty_string_arg = Types.(Message {
+let message_empty_string_arg = Osc_types.(Message {
   address = "/test";
   arguments = [
     String "";
   ];
 })
 
-let message_all_args_basic = Types.(Message {
+let message_all_args_basic = Osc_types.(Message {
   address = "/test";
   arguments = [
     String "foobar";
@@ -22,28 +22,28 @@ let message_all_args_basic = Types.(Message {
   ];
 })
 
-let message_empty_blob_arg = Types.(Message {
+let message_empty_blob_arg = Osc_types.(Message {
   address = "/test";
   arguments = [
     Blob "";
   ];
 })
 
-let message_timetag_immediate_arg = Types.(Message {
+let message_timetag_immediate_arg = Osc_types.(Message {
   address = "/test";
   arguments = [
     Timetag Immediate;
   ];
 })
 
-let message_timetag_time_arg = Types.(Message {
+let message_timetag_time_arg = Osc_types.(Message {
   address = "/test";
   arguments = [
     Timetag (Time {seconds = 456l; fraction = 123l});
   ];
 })
 
-let message_all_args = Types.(Message {
+let message_all_args = Osc_types.(Message {
   address = "/test";
   arguments = [
     Blob "baz";
@@ -55,27 +55,27 @@ let message_all_args = Types.(Message {
   ];
 })
 
-let bundle_immediate_no_packets = Types.(Bundle {
+let bundle_immediate_no_packets = Osc_types.(Bundle {
   timetag = Immediate;
   packets = [];
 })
 
-let bundle_no_packets = Types.(Bundle {
+let bundle_no_packets = Osc_types.(Bundle {
   timetag = Time {seconds = 147l; fraction = 258l};
   packets = [];
 })
 
-let bundle_one_message = Types.(Bundle {
+let bundle_one_message = Osc_types.(Bundle {
   timetag = Time {seconds = 12l; fraction = 48l};
   packets = [message_all_args];
 })
 
-let bundle_two_messages = Types.(Bundle {
+let bundle_two_messages = Osc_types.(Bundle {
   timetag = Immediate;
   packets = [message_all_args; message_empty_blob_arg];
 })
 
-let bundle_recursive = Types.(Bundle {
+let bundle_recursive = Osc_types.(Bundle {
   timetag = Time {seconds = 678l; fraction = 345l};
   packets = [message_all_args; bundle_two_messages];
 })
@@ -107,7 +107,7 @@ let test_packets_internal =
   test_packets_basic @ test_packets_extended @ test_bundles
 
 let are_arguments_equal arg1 arg2 =
-  let open Types in
+  let open Osc_types in
   match arg1, arg2 with
   | Blob a, Blob b -> a = b
   | String a, String b -> a = b
@@ -119,20 +119,20 @@ let are_arguments_equal arg1 arg2 =
   | _, _ -> false
 
 let string_of_argument = function
-  | Types.Blob s -> Printf.sprintf "Blob %s" s
-  | Types.String s -> Printf.sprintf "String %s" s
-  | Types.Int32 i -> Printf.sprintf "Int32 %ld" i
-  | Types.Float32 f -> Printf.sprintf "Float32 %f" f
-  | Types.Timetag t ->
+  | Osc_types.Blob s -> Printf.sprintf "Blob %s" s
+  | Osc_types.String s -> Printf.sprintf "String %s" s
+  | Osc_types.Int32 i -> Printf.sprintf "Int32 %ld" i
+  | Osc_types.Float32 f -> Printf.sprintf "Float32 %f" f
+  | Osc_types.Timetag t ->
     Printf.sprintf "Timetag %s"
       (match t with
-      | Types.Immediate -> "Immediate"
-      | Types.Time time ->
+      | Osc_types.Immediate -> "Immediate"
+      | Osc_types.Time time ->
         Printf.sprintf "%ld.%ld"
-          time.Types.seconds time.Types.fraction)
+          time.Osc_types.seconds time.Osc_types.fraction)
 
 let assert_messages_equal message1 message2 =
-  let open Osc.Types in
+  let open Osc.Osc_types in
   assert_equal
     ~msg:"Incorrect address"
     message1.address message2.address;
@@ -150,7 +150,7 @@ let assert_messages_equal message1 message2 =
     message2.arguments
 
 let rec assert_bundles_equal bundle1 bundle2 =
-  let open Osc.Types in
+  let open Osc.Osc_types in
   assert_equal
     ~msg:"Incorrect timetag"
     bundle1.timetag bundle2.timetag;
@@ -163,7 +163,7 @@ let rec assert_bundles_equal bundle1 bundle2 =
     bundle1.packets bundle2.packets
 
 and assert_packets_equal packet1 packet2 =
-  let open Osc.Types in
+  let open Osc.Osc_types in
   match packet1, packet2 with
   | Message message1, Message message2 ->
     assert_messages_equal message1 message2
