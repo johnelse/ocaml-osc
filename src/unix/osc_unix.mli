@@ -6,7 +6,7 @@ module Udp : sig
 
     val destroy : t -> unit
 
-    val send : t -> Unix.sockaddr -> Osc.Types.packet -> unit
+    val send : t -> Unix.sockaddr -> Osc.Osc_types.packet -> unit
   end
 
   module Server : sig
@@ -18,7 +18,7 @@ module Udp : sig
 
     val recv :
       t ->
-      (Osc.Types.packet * Unix.sockaddr, [
+      (Osc.Osc_types.packet * Unix.sockaddr, [
         | `Missing_typetag_string
         | `Unsupported_typetag of char
       ]) Result.result
