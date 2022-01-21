@@ -1,14 +1,5 @@
 (test
   (name test_unix)
   (modules test_unix)
-  (libraries osc-unix test_common threads)
-  (deps
-    (:x test_interop_sclang.exe)
-    (source_tree helpers))
-  (action (run ./helpers/test-interop-sclang.sh)))
-
-(executable
-  (name test_interop_sclang)
-  (modules test_interop_sclang)
-  (libraries osc-unix test_common))
+  (libraries osc-unix test_common threads))
 
