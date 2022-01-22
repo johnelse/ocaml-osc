@@ -9,4 +9,3 @@
     (:x test_interop_sclang.exe)
     (source_tree helpers))
   (action (run ./helpers/test-interop-sclang.sh)))
-
