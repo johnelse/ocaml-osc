@@ -6,7 +6,7 @@ module Udp : sig
 
     val destroy : t -> unit Lwt.t
 
-    val send : t -> Lwt_unix.sockaddr -> Osc.Types.packet -> unit Lwt.t
+    val send : t -> Lwt_unix.sockaddr -> Osc.Osc_types.packet -> unit Lwt.t
   end
 
   module Server : sig
@@ -18,7 +18,7 @@ module Udp : sig
 
     val recv :
       t ->
-      ((Osc.Types.packet * Lwt_unix.sockaddr, [
+      ((Osc.Osc_types.packet * Lwt_unix.sockaddr, [
         | `Missing_typetag_string
         | `Unsupported_typetag of char
       ]) Result.result) Lwt.t

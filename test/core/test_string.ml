@@ -24,7 +24,7 @@ let test_message_encode_decode_suite =
   )
 
 let test_data =
-  let open Osc.Types in
+  let open Osc.Osc_types in
   [
     (* A packet which we expect to decode successfully. *)
     "message_ok",

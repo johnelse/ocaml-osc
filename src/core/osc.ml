@@ -1,5 +1,5 @@
-module Types = struct
-  include Types
+module Osc_types = struct
+  include Osc_types
 end
 
 module Codec = struct

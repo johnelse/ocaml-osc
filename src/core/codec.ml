@@ -1,4 +1,5 @@
-open Rresult
+let ( >>= ) = Result.bind
+let ( >>| ) r f = Result.map f r
 
 module Input = struct
   type t = {
@@ -58,18 +59,20 @@ module Decode = struct
     result
 
   let decode_timetag input =
+    let open Osc_types in
     let seconds = decode_int32 input in
     let fraction = decode_int32 input in
     match seconds, fraction with
-    | 0l, 1l -> Types.Immediate
-    | _ -> Types.(Time {seconds; fraction})
+    | 0l, 1l -> Immediate
+    | _ -> Time {seconds; fraction}
 
-  let decode_argument input = function
-    | 'f' -> Ok (Types.Float32 (decode_float32 input))
-    | 'i' -> Ok (Types.Int32 (decode_int32 input))
-    | 's' -> Ok (Types.String (decode_string input))
-    | 'b' -> Ok (Types.Blob (decode_blob input))
-    | 't' -> Ok (Types.Timetag (decode_timetag input))
+  let decode_argument input =
+    let open Osc_types in function
+    | 'f' -> Ok (Float32 (decode_float32 input))
+    | 'i' -> Ok (Int32 (decode_int32 input))
+    | 's' -> Ok (String (decode_string input))
+    | 'b' -> Ok (Blob (decode_blob input))
+    | 't' -> Ok (Timetag (decode_timetag input))
     | typetag -> Error (`Unsupported_typetag typetag)
 
   let decode_arguments input =
@@ -108,21 +111,24 @@ module Decode = struct
       end
     in
     decode_packets input []
-    >>= (fun packets -> Ok Types.({timetag; packets}))
+    >>= (fun packets -> Ok Osc_types.({timetag; packets}))
 
   and decode_packet input =
     match decode_string input with
     | "#bundle" ->
-      decode_bundle input >>= (fun bundle -> Ok (Types.Bundle bundle))
+      decode_bundle input
+      >>= (fun bundle ->
+        Ok (Osc_types.Bundle bundle))
     | address ->
-      decode_arguments input >>=
-      (fun args -> Ok (Types.(Message {address = address; arguments = args})))
+      decode_arguments input
+      >>= (fun args ->
+        Ok (Osc_types.(Message {address = address; arguments = args})))
 end
 
 module Encode = struct
   let encode_int32 output i =
     let tmp = Bytes.create int32_chars in
-    EndianString.BigEndian.set_int32 tmp 0 i;
+    EndianBytes.BigEndian.set_int32 tmp 0 i;
     Buffer.add_bytes output tmp
 
   let encode_float32 output f =
@@ -148,7 +154,7 @@ module Encode = struct
     end
 
   let encode_timetag output =
-    let open Types in function
+    let open Osc_types in function
     | Immediate ->
       encode_int32 output 0l;
       encode_int32 output 1l;
@@ -156,20 +162,22 @@ module Encode = struct
       encode_int32 output seconds;
       encode_int32 output fraction
 
-  let encode_argument output = function
-    | Types.Float32 f -> encode_float32 output f
-    | Types.Int32 i -> encode_int32 output i
-    | Types.String s -> encode_string output s
-    | Types.Blob b -> encode_blob output b
-    | Types.Timetag t -> encode_timetag output t
+  let encode_argument output =
+    let open Osc_types in function
+    | Float32 f -> encode_float32 output f
+    | Int32 i -> encode_int32 output i
+    | String s -> encode_string output s
+    | Blob b -> encode_blob output b
+    | Timetag t -> encode_timetag output t
 
   let encode_arguments output args =
+    let open Osc_types in
     let typetag_of_argument = function
-      | Types.Float32 _ -> 'f'
-      | Types.Int32 _ -> 'i'
-      | Types.String _ -> 's'
-      | Types.Blob _ -> 'b'
-      | Types.Timetag _ -> 't'
+      | Float32 _ -> 'f'
+      | Int32 _ -> 'i'
+      | String _ -> 's'
+      | Blob _ -> 'b'
+      | Timetag _ -> 't'
     in
     (* Encode the typetags as a string, prefixed with a comma. *)
     let typetag_string = Bytes.create ((List.length args) + 1) in
@@ -188,7 +196,7 @@ module Encode = struct
     in
     encode args
 
-  let rec encode_bundle output {Types.timetag; packets} =
+  let rec encode_bundle output {Osc_types.timetag; packets} =
     encode_timetag output timetag;
     List.iter
       (fun packet ->
@@ -200,12 +208,12 @@ module Encode = struct
       packets
 
   and encode_packet output = function
-    | Types.Bundle bundle ->
+    | Osc_types.Bundle bundle ->
       encode_string output "#bundle";
       encode_bundle output bundle
-    | Types.Message msg ->
-      encode_string output msg.Types.address;
-      encode_arguments output msg.Types.arguments
+    | Osc_types.Message msg ->
+      encode_string output msg.Osc_types.address;
+      encode_arguments output msg.Osc_types.arguments
 end
 
 let of_packet packet =
