@@ -9,7 +9,7 @@ type test_config = {
 }
 
 let ping_sclang config packet =
-  let open Osc.Osc_types in
+  let open Osc.Types in
   let open Osc_unix.Udp in
   let localhost = Unix.inet_addr_of_string "127.0.0.1" in
   let ml_addr = Unix.ADDR_INET (localhost, config.ml_port) in

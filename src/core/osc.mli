@@ -1,6 +1,6 @@
 (** IO-independent code for handling OSC packets and bundles. *)
 
-module Osc_types : sig
+module Types : sig
   (** Types representing OSC packets. *)
 
   type time = {
@@ -60,12 +60,12 @@ end
 module Codec : sig
   (** Conversion of OSC packets to and from strings. *)
 
-  val of_packet : Osc_types.packet -> string
+  val of_packet : Types.packet -> string
   (** Serialise an OSC packet into a string. *)
 
   val to_packet :
     string ->
-    (Osc_types.packet, [
+    (Types.packet, [
       | `Missing_typetag_string
       | `Unsupported_typetag of char
     ]) Result.t
@@ -144,7 +144,7 @@ module Transport : sig
       val destroy : t -> unit T.Io.t
       (** Destroy an OSC client. *)
 
-      val send : t -> T.sockaddr -> Osc_types.packet -> unit T.Io.t
+      val send : t -> T.sockaddr -> Types.packet -> unit T.Io.t
       (** [send client addr packet] uses [client] to send OSC packet [packet] to
           a server listening at address [addr]. *)
     end
@@ -165,7 +165,7 @@ module Transport : sig
 
       val recv :
         t ->
-        ((Osc_types.packet * T.sockaddr, [
+        ((Types.packet * T.sockaddr, [
           | `Missing_typetag_string
           | `Unsupported_typetag of char
         ]) Result.t) T.Io.t
