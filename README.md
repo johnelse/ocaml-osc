@@ -4,7 +4,7 @@ ocaml-osc
 [![Build status](https://github.com/johnelse/ocaml-osc/actions/workflows/workflow.yml/badge.svg)](https://github.com/johnelse/ocaml-osc/actions)
 
 Pure OCaml implementation of the
-[Open Sound Control](http://opensoundcontrol.org/) protocol.
+[Open Sound Control](https://opensoundcontrol.stanford.edu/) protocol.
 
 Dependencies:
 
