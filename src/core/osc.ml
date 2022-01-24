@@ -1,4 +1,4 @@
-module Osc_types = struct
+module Types = struct
   include Osc_types
 end
 
