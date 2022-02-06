@@ -10,6 +10,7 @@ jobs:
       fail-fast: false
       matrix:
         os:
+          - macOS-latest
           - ubuntu-latest
         ocaml-compiler:
           - 4.8.x
@@ -29,7 +30,14 @@ jobs:
         with:
           ocaml-compiler: ${{ matrix.ocaml-compiler }}
 
+      - run: brew install supercollider
+        if:  matrix.os == 'macOS-latest'
+
+      - run: echo "/Applications/SuperCollider.app/Contents/MacOS" >> $GITHUB_PATH
+        if:  matrix.os == 'macOS-latest'
+
       - run: sudo apt-get install -y supercollider-language
+        if:  matrix.os == 'ubuntu-latest'
 
       - run: opam install . --deps-only --with-doc --with-test
 
